@@ -24,5 +24,29 @@ VALUES
 	('aniversario', 'quando for seu aniversario terá um desconto de 10% em todos os artigos na nossa bijuteria', 1, NULL),
     ('braceletes dos amigos', 'Ao comprar qualquer bracelete ganhe uma 100% gratis', 0, 1);
     
+INSERT INTO TAB_tipos_artigos (designacao)
+VALUES
+    ('Aneis'),
+    ('Pulseiras'),
+    ('Brincos'),
+    ('Colares'),
+    ('Tornozeleiras'),
+    ('Broches'),
+    ('Pingentes'),
+    ('Chokers'),
+    ('Alfinetes de Gravata');
+    
+INSERT INTO TAB_metodo_pagamento (designacao, comissao_percentagem, comissao_valor)
+VALUES
+    ('Cartão de Crédito', 1.5, NULL),
+    ('Cartão de Débito', 1.0, NULL),
+    ('MB Way', 1.2, NULL),
+    ('Transferência Bancária', NULL, 0),
+    ('Paypal', 2.9, NULL),
+    ('Multibanco', 0.8, NULL),
+    ('Dinheiro', NULL, 0);
+    
+
+    
 
 

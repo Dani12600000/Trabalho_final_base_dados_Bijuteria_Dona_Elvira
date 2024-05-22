@@ -387,14 +387,6 @@ CREATE TABLE TAB_stock_artigo (
     FOREIGN KEY (ID_metodo_pagamento) REFERENCES TAB_metodo_pagamento(ID)
 );
 
-CREATE TABLE TAB_artigo_unico (
-	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    ID_stock_artigo INT NOT NULL,
-    descricao TEXT,
-    data_hora_introduzido_codigo_barras DATETIME NOT NULL DEFAULT (NOW()),
-    FOREIGN KEY (ID_stock_artigo) REFERENCES TAB_stock_artigo(ID)
-);
-
 CREATE TABLE TAB_percentagem_lucro_artigo (
 	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     ID_artigo INT NOT NULL,
@@ -424,22 +416,28 @@ CREATE TABLE TAB_artigo_para_transferencia (
 	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     ID_transferencia INT NOT NULL,
     ID_artigo INT NOT NULL,
+    quantidade INT NOT NULL,
     data_hora_adicionado DATETIME NOT NULL DEFAULT (NOW()),
     detalhes TEXT,
     FOREIGN KEY (ID_transferencia) REFERENCES TAB_transferencias(ID),
-    FOREIGN KEY (ID_artigo) REFERENCES TAB_artigo_unico(ID)
+    FOREIGN KEY (ID_artigo) REFERENCES TAB_artigos(ID)
 );
 
 CREATE TABLE TAB_venda (
 	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    ID_artigo_unico INT NOT NULL,
+    ID_artigo INT NOT NULL,
     ID_metodo_pagamento INT NOT NULL,
     ID_cliente INT NOT NULL,
     compra_online BOOL NOT NULL,
     ID_instalacoes_compra_recolha INT NOT NULL,
     ID_funcionario INT NOT NULL,
     data_hora_pedido DATETIME NOT NULL DEFAULT (NOW()),
-    data_hora_recolha DATETIME
+    data_hora_recolha DATETIME,
+    FOREIGN KEY (ID_artigo) REFERENCES TAB_artigos(ID),
+    FOREIGN KEY (ID_metodo_pagamento) REFERENCES TAB_metodo_pagamento(ID),
+    FOREIGN KEY (ID_cliente) REFERENCES TAB_cliente(ID),
+    FOREIGN KEY (ID_instalacoes_compra_recolha) REFERENCES TAB_instalacoes(ID),
+    FOREIGN KEY (ID_funcionario) REFERENCES TAB_funcionario(ID)
 );
 
 CREATE TABLE TAB_troca (
@@ -451,6 +449,7 @@ CREATE TABLE TAB_troca (
     ID_instalacoes INT NOT NULL, -- Instalacoes que foi feita a troca
     data_hora DATETIME NOT NULL DEFAULT (NOW()), -- as horas que aconteceu a troca
     FOREIGN KEY (ID_venda) REFERENCES TAB_venda(ID),
+    FOREIGN KEY (ID_artigo_dado) REFERENCES TAB_artigos(ID),
     FOREIGN KEY (ID_funcionario) REFERENCES TAB_funcionario(ID),
     FOREIGN KEY (ID_instalacoes) REFERENCES TAB_instalacoes(ID)
 );

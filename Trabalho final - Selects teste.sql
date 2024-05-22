@@ -11,17 +11,27 @@ SELECT obter_nome_aleatorio(), obter_sobrenome_aleatorio();
 SELECT *
 	FROM TAB_pessoa;
     
+SELECT *
+	FROM TAB_cliente
+    WHERE ID_pessoa = 914;
+    
     
     
 -- Aniversariantes hoje    
-SELECT *
-	FROM TAB_pessoa
-    WHERE DATE_FORMAT(data_nascimento, '%m-%d') = DATE_FORMAT(CURDATE(), '%m-%d');
+SELECT p.*
+	FROM TAB_pessoa p INNER JOIN TAB_cliente c ON p.ID = c.ID_pessoa
+    WHERE proxima_data(data_nascimento) = CURDATE();
 
 -- Aniversariantes amanhã
-SELECT *
-	FROM TAB_pessoa
-    WHERE DATE_FORMAT(data_nascimento, '%m-%d') = DATE_FORMAT(DATE_ADD(CURDATE(), INTERVAL 1 DAY), '%m-%d');    
+SELECT p.*
+	FROM TAB_pessoa p INNER JOIN TAB_cliente c ON p.ID = c.ID_pessoa
+    WHERE proxima_data(data_nascimento) = DATE_ADD(CURDATE(), INTERVAL 1 DAY); 
+
+-- Aniversariantes proximos 7 dias
+SELECT p.*
+	FROM TAB_pessoa p INNER JOIN TAB_cliente c ON p.ID = c.ID_pessoa
+    WHERE proxima_data(data_nascimento) >= CURDATE() AND proxima_data(data_nascimento) <= DATE_ADD(CURDATE(), INTERVAL 7 DAY)
+    ORDER BY proxima_data(data_nascimento) ASC;
 
 
 SELECT ID_pessoa, COUNT(*)
@@ -36,4 +46,10 @@ SELECT *
 	FROM logs_aniversariantes;
     
 SELECT *
-	FROM VIEW_informacoes_cliente
+	FROM VIEW_informacoes_cliente;
+    
+SELECT *
+	FROM logs_clientes
+    ORDER BY data_hora DESC;
+    
+UPDATE TAB_cliente SET ID_pessoa = 914 WHERE ID_pessoa = 913 
