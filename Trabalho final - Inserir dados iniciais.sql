@@ -1,5 +1,34 @@
 USE DB_Bijuteria_Dona_Elvira;
 
+INSERT INTO TAB_profissao (designacao, salario_base)
+VALUES
+    ('Vendedor', 800.00),
+    ('Gerente de Loja', 1500.00),
+    ('Designer de Joias', 2000.00),
+    ('Ourives', 1800.00),
+    ('Consultor de Vendas', 900.00),
+    ('Assistente Administrativo', 750.00),
+    ('Supervisor de Produção', 1300.00),
+    ('Técnico em Gemologia', 2200.00),
+    ('Programador', 1800.00),
+    ('Analista de Sistemas', 2000.00),
+    ('Administrador de Redes', 2200.00);
+    
+INSERT INTO TAB_tipo_instalacoes (designacao, descricao)
+VALUES
+    ('Loja', 'Espaço destinado à exposição e venda de bijuterias e acessórios.'),
+    ('Escritório', 'Local para atividades administrativas, gestão e atendimento aos clientes.'),
+    ('Armazém', 'Espaço para armazenamento de artigos.'),
+    ('Showroom', 'Ambiente para exibição de peças exclusivas e coleções especiais de bijuterias.');
+    
+INSERT INTO TAB_tipos_manutencao (designacao, descricao, normalmente_afeta_normal_func)
+VALUES
+    ('Limpeza', 'Remoção de sujeira e acúmulo de resíduos das instalações e equipamentos.', FALSE),
+    ('Reparação', 'Correção de danos e defeitos em máquinas, equipamentos ou estruturas.', TRUE),
+    ('Manutenção Preventiva', 'Inspeção e reparo periódicos para evitar falhas e prolongar a vida útil.', FALSE),
+    ('Substituição de Peças', 'Troca de componentes desgastados ou danificados por novos.', TRUE),
+    ('Calibração', 'Ajuste e verificação de equipamentos para garantir precisão e desempenho adequado.', FALSE);
+
 INSERT INTO TAB_unidades_tempo (no_singular, no_plural)
 VALUES
 	('segundo', 'segundos'),
@@ -22,7 +51,7 @@ VALUES
 INSERT INTO TAB_promocao (nome, descricao, pode_ser_obtido_todos_meses, quantas_vezes_pode_ser_obtido)
 VALUES
 	('aniversario', 'quando for seu aniversario terá um desconto de 10% em todos os artigos na nossa bijuteria', 1, NULL),
-    ('braceletes dos amigos', 'Ao comprar qualquer bracelete ganhe uma 100% gratis', 0, 1);
+    ('pulseira dos amigos', 'Ao comprar qualquer pulseira ganhe uma 100% gratis', 0, 1);
     
 INSERT INTO TAB_tipos_artigos (designacao)
 VALUES
@@ -36,6 +65,11 @@ VALUES
     ('Chokers'),
     ('Alfinetes de Gravata');
     
+INSERT INTO TAB_promocao_tipo_artigo (ID_promocao, ID_tipo_artigo, acao, quantidade, desconto)
+VALUES
+	(2, 2, 'compra', 1, NULL),
+    (2, 2, 'desconto', 1, 100);
+    
 INSERT INTO TAB_metodo_pagamento (designacao, comissao_percentagem, comissao_valor)
 VALUES
     ('Cartão de Crédito', 1.5, NULL),
@@ -47,6 +81,90 @@ VALUES
     ('Dinheiro', NULL, 0);
     
 
+INSERT INTO TAB_feriado (designacao, detalhes)
+VALUES
+	('Ano novo','Dia que comemora a passagem de ano'),
+    ('Sexta-feira santa','É a maior data religiosa cristã que relembra a crucificação de Jesus Cristo e sua morte no Calvário'),
+    ('Páscoa','Dia em que é comemorado uma festividade religiosa e um feriado que celebra a ressurreição de Jesus ocorrida no terceiro dia após sua crucificação no Calvário, conforme o relato do Novo Testamento.'),
+    ('Dia da liberdade','O Dia da Liberdade é comemorado em Portugal a 25 de abril. Este é um dos 13 feriados nacionais obrigatórios. A data celebra a revolta dos militares portugueses.'),
+	('Dia do trabalhador', 'Dia dedicada aos trabalhadores'),
+    ('Corpo de Deus','A Solenidade do Santíssimo Sacramento do Corpo e do Sangue de Cristo ou Corpus Christi ou Corpus Domini, e generalizada em Portugal como Corpo de Deus, é uma comemoração litúrgica das igrejas Católica'),
+    ('Dia de Portugal','O Dia de Portugal, de Camões e das Comunidades Portuguesas celebra a data de 10 de Junho de 1580, data da morte de Camões, sendo também este o dia dedicado ao Anjo Custódio de Portugal. Este é também o dia da Língua Portuguesa, dos cidadãos e das Forças Armadas.'),
+    ('Dia de Santo António','Santo António nasceu a 15 de agosto de 1195, em Lisboa, e faleceu a 13 de junho de 1231, em Pádua. Foi assim escolhido o dia 13 para a sua celebração.'),
+    ('Dia de São João','Em Portugal, o Dia de São João é celebrado no dia 24 de junho. São João é, tal como Santo António e São Pedro, um santo popular muito festejado em Portugal.'),
+    ('Dia da Assunção de Nossa Senhora','A Solenidade da Assunção da Bem-aventurada Virgem Maria é celebrada no dia 15 de agosto, desde o século V, com o significado de "Nascimento para o Céu" ou, segundo a tradição bizantina, de "Dormição".'),
+    ('Dia da Implantação da Republica','A República Portuguesa foi proclamada em Lisboa a 5 de outubro de 1910. Nesse dia foi organizado um governo provisório, que tomou o controlo da administração do país, chefiado por Teófilo Braga, um dos teorizadores do movimento republicano nacional.'),
+    ('Dia de todos os Santos','Dia de Todos os Santos é uma festa celebrada em honra de todos os santos e mártires, conhecidos ou não. Esta festa é celebrada pelos crentes de muitas das igrejas da religião cristã, por ser herdada a partir da tradição apostólica.'),
+    ('Dia da Restauração da Independência','A Restauração da Independência ou Restauração de Portugal, é o nome que se dá ao golpe de Estado revolucionário ocorrido a 1 de Dezembro de 1640'),
+    ('Dia de Imaculada Conceição','O dia da Imaculada Conceição, celebrado no dia 8 de dezembro, é feriado nacional. Este dia invoca a vida e a virtude de Virgem Maria, mãe de Jesus'),
+    ('Natal','A data é o centro das festas de fim de ano e da temporada de férias, sendo, no cristianismo, o marco inicial do Ciclo do Natal, que dura doze dias.');
+
+INSERT INTO TAB_dia_feriado (ID_feriado, data, n_dias)
+VALUES
+	(1, '2024-01-01', 1),
+    (1, '2025-01-01', 1),
+    (1, '2026-01-01', 1),
+    (2, '2024-03-29', 1),
+    (2, '2025-04-18', 1),
+    (2, '2026-04-03', 1),
+    (3, '2024-03-31', 1),
+    (3, '2025-04-20', 1),
+    (3, '2026-04-05', 1),
+    (4, '2024-04-25', 1),
+    (4, '2024-04-25', 1),
+    (4, '2024-04-25', 1),
+    (5, '2024-05-01', 1),
+    (5, '2025-05-01', 1),
+    (5, '2026-05-01', 1),
+    (6, '2024-05-30', 1),
+    (6, '2025-06-19', 1),
+    (6, '2026-06-04', 1),
+    (7, '2024-06-10', 1),
+    (7, '2025-06-10', 1),
+    (7, '2026-06-10', 1),
+    (8, '2024-06-13', 1),
+    (8, '2025-06-13', 1),
+    (8, '2026-06-13', 1),
+    (9, '2024-06-24', 1),
+    (9, '2025-05-24', 1),
+    (9, '2026-05-24', 1),
+    (10, '2024-08-15', 1),
+    (10, '2025-08-15', 1),
+    (10, '2026-08-15', 1),
+    (11, '2024-10-05', 1),
+    (11, '2025-10-05', 1),
+    (11, '2026-10-05', 1),
+    (12, '2024-11-01', 1),
+    (12, '2025-11-01', 1),
+    (12, '2026-11-01', 1),
+    (13, '2024-12-01', 1),
+    (13, '2025-12-01', 1),
+    (13, '2026-12-01', 1),
+    (14, '2024-12-08', 1),
+    (14, '2025-12-08', 1),
+    (14, '2026-12-08', 1),
+    (15, '2024-12-25', 3),
+    (15, '2025-12-25', 3),
+    (15, '2026-12-25', 3);
+
+INSERT INTO TAB_instalacoes (designacao, ID_tipo_instalacoes, morada, localizacao_gps, data_hora_primeira_abertura, data_hora_ultimo_encerramento)
+VALUES
+    ('Loja Central', 1, 'Rua Principal, 123', ST_GeomFromText('POINT(38.7223 -9.1393)'), '2022-01-01 09:00:00', '2022-05-31 18:00:00'),
+    ('Loja Filial', 1, 'Avenida Secundária, 456', ST_GeomFromText('POINT(38.7111 -9.1432)'), '2022-02-15 10:00:00', NULL),
+    ('Escritório Administrativo', 2, 'Avenida das Empresas, 789', ST_GeomFromText('POINT(38.7199 -9.1411)'), '2022-01-20 09:30:00', NULL),
+    ('Armazém Central', 3, 'Rua dos Armazéns, 1011', ST_GeomFromText('POINT(38.7200 -9.1399)'), '2022-01-01 08:00:00', NULL),
+    ('Showroom', 4, 'Praça das Exibições, 1213', ST_GeomFromText('POINT(38.7250 -9.1400)'), '2022-04-05 11:00:00', NULL);
     
+INSERT INTO TAB_horas (hora_aberto, hora_fechado)
+VALUES
+	('09:00:00', '13:00:00'),
+    ('09:00:00', '12:00:00'),
+    ('10:00:00', '13:00:00'),
+    ('14:00:00', '18:00:00'),
+    ('14:00:00', '17:00:00'),
+    ('14:00:00', '17:30:00'),
+	('15:00:00', '18:00:00');
 
-
+INSERT INTO TAB_horario (data_hora_entrada_vigor, ID_feriado, ID_instalacoes)
+VALUES
+	(DATE_ADD(CURDATE(), INTERVAL 7 DAY), NULL, 1)

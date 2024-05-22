@@ -102,14 +102,49 @@ BEGIN
     WHILE contador <= vezes DO
 		SELECT ID INTO ID_cliente_aleatorio 
 			FROM TAB_pessoa 
-            WHERE ID NOT IN (SELECT ID FROM TAB_cliente)
+            WHERE ID NOT IN (SELECT ID_pessoa FROM TAB_cliente) AND ID NOT IN (SELECT ID_pessoa FROM TAB_funcionario)
             ORDER BY RAND()
 			LIMIT 1;
     
         INSERT INTO TAB_cliente (ID_pessoa, data_hora_registo) 
         VALUES (
 			ID_cliente_aleatorio, 
-            DATE_SUB(CURRENT_DATE(), INTERVAL FLOOR(RAND() * 22) DAY)
+            DATE_SUB(CURRENT_DATE(), INTERVAL FLOOR(RAND() * 79200) MINUTE)
+		);
+        SET contador = contador + 1;
+    END WHILE;
+END;
+//
+
+DELIMITER ;
+
+DELIMITER //
+
+DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosFuncionarios;
+
+CREATE PROCEDURE ExecutarInsercaoRegistosMultiplosFuncionarios(IN vezes INT)
+BEGIN
+    DECLARE contador INT;
+    DECLARE ID_funcionario_aleatorio INT;
+    DECLARE ID_profissao_aleatorio INT;
+
+    SET contador = 1;
+
+    WHILE contador <= vezes DO
+		SELECT ID INTO ID_funcionario_aleatorio 
+			FROM TAB_pessoa 
+            WHERE ID NOT IN (SELECT ID_pessoa FROM TAB_cliente) AND ID NOT IN (SELECT ID_pessoa FROM TAB_funcionario)
+            ORDER BY RAND()
+			LIMIT 1;
+		
+        SELECT ID INTO ID_profissao_aleatorio
+			FROM TAB_profissao
+            ORDER BY RAND()
+            LIMIT 1;
+    
+        INSERT INTO TAB_funcionario (ID_pessoa, ID_profissao) 
+        VALUES (
+			ID_funcionario_aleatorio,
 		);
         SET contador = contador + 1;
     END WHILE;
@@ -195,6 +230,33 @@ BEGIN
 	END IF;
 
     RETURN proxima_data_obtida;
+END;
+//
+
+DELIMITER ;
+
+DELIMITER //
+
+DROP FUNCTION IF EXISTS dia_feriado_muda_cada_ano;
+
+CREATE FUNCTION dia_feriado_muda_cada_ano(ID_feriado_into INT)
+RETURNS BOOL READS SQL DATA
+BEGIN
+	DECLARE n_datas_distintas INT;
+	DECLARE repete BOOL;
+    
+    SELECT COUNT(DISTINCT DATE_FORMAT(df.data, '%m-%d')) INTO n_datas_distintas
+		FROM TAB_dia_feriado df INNER JOIN TAB_feriado f ON df.ID_feriado = f.ID
+		WHERE f.ID = ID_feriado_into
+		GROUP BY f.ID, f.designacao;
+        
+	IF n_datas_distintas > 1 THEN 
+		SET repete = TRUE;
+    ELSE 
+		SET repete = FALSE;
+    END IF;
+
+    RETURN repete;
 END;
 //
 

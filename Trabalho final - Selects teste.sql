@@ -40,6 +40,7 @@ SELECT ID_pessoa, COUNT(*)
     HAVING COUNT(*) > 1
     ORDER BY COUNT(*) DESC;
     
+    
 SELECT obter_nome_aleatorio(), obter_sobrenome_aleatorio();
     
 SELECT *
@@ -50,6 +51,68 @@ SELECT *
     
 SELECT *
 	FROM logs_clientes
-    ORDER BY data_hora DESC;
+    ORDER BY data_hora DESC, ID ASC;
     
-UPDATE TAB_cliente SET ID_pessoa = 914 WHERE ID_pessoa = 913 
+SELECT acao, COUNT(ID)
+	FROM logs_clientes
+    GROUP BY acao;
+    
+SELECT acao, COUNT(ID)
+	FROM logs_pessoas
+    GROUP BY acao;
+    
+SELECT TIMEDIFF(MAX(data_hora), MIN(data_hora))
+	FROM logs_clientes;
+    
+SELECT *
+	FROM TAB_cliente
+    WHERE ID_pessoa = 914;
+    
+SELECT *
+	FROM TAB_cliente
+    WHERE ID = (SELECT MAX(ID) FROM TAB_cliente);
+    
+    
+UPDATE TAB_cliente SET ID_pessoa = 914 WHERE ID_pessoa = 913 ;
+
+
+SELECT *
+	FROM TAB_feriado;
+    
+SELECT df.ID, f.designacao, df.data, df.n_dias
+	FROM TAB_dia_feriado df INNER JOIN TAB_feriado f ON df.ID_feriado = f.ID
+    ORDER BY df.data ASC;
+    
+SELECT ID, designacao, IF (dia_feriado_muda_cada_ano(ID), 'Sim','Não') AS muda_cada_ano
+	FROM TAB_feriado;
+
+SELECT *
+	FROM TAB_funcionario;
+    
+SELECT *
+	FROM TAB_profissao
+    ORDER BY salario_base DESC;
+    
+SELECT *
+	FROM TAB_profissao
+    WHERE salario_base = (SELECT MAX(salario_base) FROM TAB_profissao);
+    
+SELECT *
+	FROM TAB_profissao
+    WHERE ABS(salario_base - (SELECT AVG(salario_base) FROM TAB_profissao)) = (
+		SELECT ABS(salario_base - (SELECT AVG(salario_base) FROM TAB_profissao))
+			FROM TAB_profissao
+			ORDER BY ABS(salario_base - (SELECT AVG(salario_base) FROM TAB_profissao)) ASC
+			LIMIT 1)
+	;
+        
+SELECT *
+	FROM TAB_profissao
+    WHERE salario_base = (SELECT MIN(salario_base) FROM TAB_profissao);
+    
+SELECT *
+	FROM TAB_tipo_instalacoes;
+    
+SELECT ID, TIME_FORMAT(hora_aberto, '%H:%i') AS hora_aberto, TIME_FORMAT(hora_fechado, '%H:%i') AS hora_fechado, TIME_FORMAT(TIMEDIFF(hora_fechado, hora_aberto), '%H:%i') AS periodo_trabalho
+	FROM TAB_horas;
+    

@@ -319,7 +319,8 @@ CREATE TABLE TAB_promocao_cliente (
 
 CREATE TABLE TAB_tipos_artigos (
 	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    designacao NVARCHAR(255) NOT NULL
+    designacao NVARCHAR(255) NOT NULL,
+    detalhes TEXT
 );
 
 CREATE TABLE TAB_fornecedores (
@@ -373,16 +374,26 @@ CREATE TABLE TAB_tamanho (
     FOREIGN KEY (ID_tipo_artigo) REFERENCES TAB_tipos_artigos(ID)
 );
 
+CREATE TABLE TAB_tamanho_artigo (
+	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    ID_tamanho INT NOT NULL,
+    ID_artigo INT NOT NULL,
+    desde DATE NOT NULL DEFAULT (CURRENT_DATE()),
+    FOREIGN KEY (ID_tamanho) REFERENCES TAB_tamanho(ID),
+    FOREIGN KEY (ID_artigo) REFERENCES TAB_artigos(ID)
+);
+
 CREATE TABLE TAB_stock_artigo (
 	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    ID_artigo INT NOT NULL,
     quantidade INT NOT NULL DEFAULT (1),
-    ID_tamanho INT NOT NULL,
     data_hora_requesitado DATETIME NOT NULL DEFAULT (NOW()),
     data_hora_envio DATETIME,
     data_hora_chegada DATETIME,
     ID_instalacoes_destino INT NOT NULL,
     ID_metodo_pagamento INT NOT NULL,
     valor_total DECIMAL(10,2) NOT NULL, -- Valor total da compra para stock do cujo
+    FOREIGN KEY (ID_artigo) REFERENCES TAB_artigos(ID),
     FOREIGN KEY (ID_instalacoes_destino) REFERENCES TAB_instalacoes(ID),
     FOREIGN KEY (ID_metodo_pagamento) REFERENCES TAB_metodo_pagamento(ID)
 );
