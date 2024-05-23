@@ -116,3 +116,16 @@ SELECT *
 SELECT ID, TIME_FORMAT(hora_aberto, '%H:%i') AS hora_aberto, TIME_FORMAT(hora_fechado, '%H:%i') AS hora_fechado, TIME_FORMAT(TIMEDIFF(hora_fechado, hora_aberto), '%H:%i') AS periodo_trabalho
 	FROM TAB_horas;
     
+SELECT ti.ID, ti.designacao, COUNT(i.ID) AS n_tipo_instalacoes
+	FROM TAB_tipo_instalacoes ti INNER JOIN TAB_instalacoes i ON ti.ID = i.ID_tipo_instalacoes
+    GROUP BY ti.ID, ti.designacao;
+    
+SELECT *
+	FROM TAB_instalacoes;
+    
+SELECT pe.ID, CONCAT(pe.nome, ' ', pe.sobrenome) AS nome_completo, pr.designacao, pr.salario_base
+	FROM TAB_pessoa pe
+			INNER JOIN TAB_funcionario f ON pe.ID = f.ID_pessoa
+			INNER JOIN TAB_profissao pr ON f.ID_profissao = pr.ID
+    ORDER BY f.ID DESC;
+    

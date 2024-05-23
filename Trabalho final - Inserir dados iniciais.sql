@@ -149,7 +149,7 @@ VALUES
 
 INSERT INTO TAB_instalacoes (designacao, ID_tipo_instalacoes, morada, localizacao_gps, data_hora_primeira_abertura, data_hora_ultimo_encerramento)
 VALUES
-    ('Loja Central', 1, 'Rua Principal, 123', ST_GeomFromText('POINT(38.7223 -9.1393)'), '2022-01-01 09:00:00', '2022-05-31 18:00:00'),
+    ('Loja Central', 1, 'Rua Principal, 123', ST_GeomFromText('POINT(38.7223 -9.1393)'), '2022-01-01 09:00:00', NULL),
     ('Loja Filial', 1, 'Avenida Secundária, 456', ST_GeomFromText('POINT(38.7111 -9.1432)'), '2022-02-15 10:00:00', NULL),
     ('Escritório Administrativo', 2, 'Avenida das Empresas, 789', ST_GeomFromText('POINT(38.7199 -9.1411)'), '2022-01-20 09:30:00', NULL),
     ('Armazém Central', 3, 'Rua dos Armazéns, 1011', ST_GeomFromText('POINT(38.7200 -9.1399)'), '2022-01-01 08:00:00', NULL),
@@ -167,4 +167,11 @@ VALUES
 
 INSERT INTO TAB_horario (data_hora_entrada_vigor, ID_feriado, ID_instalacoes)
 VALUES
-	(DATE_ADD(CURDATE(), INTERVAL 7 DAY), NULL, 1)
+	(DATE_ADD(CURDATE(), INTERVAL 7 DAY), NULL, 1);
+    
+    
+INSERT INTO TAB_pessoa (nome, sobrenome, data_nascimento)
+VALUE ('Elvira Maria', 'Silva Santos', '1960-03-15');
+
+INSERT INTO TAB_funcionario (ID_pessoa, ID_profissao)
+VALUE ((SELECT MAX(ID) FROM TAB_pessoa), 2)

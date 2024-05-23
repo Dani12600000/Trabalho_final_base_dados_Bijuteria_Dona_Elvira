@@ -102,7 +102,7 @@ BEGIN
     WHILE contador <= vezes DO
 		SELECT ID INTO ID_cliente_aleatorio 
 			FROM TAB_pessoa 
-            WHERE ID NOT IN (SELECT ID_pessoa FROM TAB_cliente) AND ID NOT IN (SELECT ID_pessoa FROM TAB_funcionario)
+            WHERE ID NOT IN (SELECT ID_pessoa FROM TAB_cliente)
             ORDER BY RAND()
 			LIMIT 1;
     
@@ -133,7 +133,7 @@ BEGIN
     WHILE contador <= vezes DO
 		SELECT ID INTO ID_funcionario_aleatorio 
 			FROM TAB_pessoa 
-            WHERE ID NOT IN (SELECT ID_pessoa FROM TAB_cliente) AND ID NOT IN (SELECT ID_pessoa FROM TAB_funcionario)
+            WHERE ID NOT IN (SELECT ID_pessoa FROM TAB_funcionario)
             ORDER BY RAND()
 			LIMIT 1;
 		
