@@ -326,10 +326,7 @@ CREATE TABLE TAB_tipos_artigos (
 CREATE TABLE TAB_fornecedores (
 	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     nome_empresa NVARCHAR(255) NOT NULL,
-    nome_intermediario NVARCHAR(255) NOT NULL,
-    NIF_empresa VARCHAR(30) NOT NULL,
-    NIF_intermediario VARCHAR(30) NOT NULL,
-    CC_intermediario VARCHAR(30) NOT NULL
+    NIF_empresa VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE TAB_artigos (
@@ -347,10 +344,13 @@ CREATE TABLE TAB_promocao_tipo_artigo (
     ID_tipo_artigo INT NOT NULL,
     acao VARCHAR(20) CHECK (acao IN ('compra', 'desconto')),
     quantidade INT NOT NULL DEFAULT (1),
-    desconto DECIMAL(3,2),
+    desconto DECIMAL(5,2),
     FOREIGN KEY (ID_promocao) REFERENCES TAB_promocao(ID),
     FOREIGN KEY (ID_tipo_artigo) REFERENCES TAB_tipos_artigos(ID),
-    CONSTRAINT chk_acao_desconto_artigo CHECK (acao = 'desconto' AND desconto IS NOT NULL OR acao = 'compra' AND desconto IS NULL)
+    CONSTRAINT chk_acao_desconto_artigo CHECK (
+		(acao = 'desconto' AND desconto IS NOT NULL AND desconto <= 100) OR 
+        (acao = 'compra' AND desconto IS NULL)
+	)
 );
 
 CREATE TABLE TAB_promocao_artigo (
