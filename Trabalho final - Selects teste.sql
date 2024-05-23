@@ -129,3 +129,21 @@ SELECT pe.ID, CONCAT(pe.nome, ' ', pe.sobrenome) AS nome_completo, pr.designacao
 			INNER JOIN TAB_profissao pr ON f.ID_profissao = pr.ID
     ORDER BY f.ID DESC;
     
+SELECT p.ID, p.designacao, COUNT(f.ID) AS n_funcionarios
+	FROM TAB_profissao p INNER JOIN TAB_funcionario f ON p.ID = f.ID_profissao
+    GROUP BY p.ID, p.designacao
+    UNION
+SELECT MAX(p.ID) + 1, 'Total de funcionarios', COUNT(*)
+	FROM TAB_profissao p INNER JOIN TAB_funcionario f ON p.ID = f.ID_profissao;
+    
+    
+SELECT p.ID, p.designacao, COUNT(f.ID) AS n_funcionarios
+	FROM TAB_profissao p INNER JOIN TAB_funcionario f ON p.ID = f.ID_profissao
+    GROUP BY p.ID, p.designacao
+    HAVING COUNT(f.ID) = (
+		SELECT COUNT(f.ID)
+			FROM TAB_profissao p INNER JOIN TAB_funcionario f ON p.ID = f.ID_profissao
+			GROUP BY p.ID, p.designacao
+            ORDER BY 1 DESC
+            LIMIT 1
+		);
