@@ -19,7 +19,7 @@ SELECT c.ID AS ID_cliente,
             WHEN ic.ID IS NOT NULL AND pa.ID IS NULL THEN ic.CC
             ELSE "---"
 		END AS documento_identificacao,
-		CASE -- Depois ver melhor aqui disto, pelo que parece estrangeiros tambem podem ter nifs
+		CASE
 			WHEN ic.ID IS NULL AND pa.ID IS NOT NULL THEN "---"
             WHEN ic.ID IS NOT NULL AND pa.ID IS NULL THEN ic.NIF
             ELSE "---"
