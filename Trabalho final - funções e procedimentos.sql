@@ -66,6 +66,42 @@ DELIMITER ;
 
 DELIMITER //
 
+CREATE FUNCTION gerar_nif()
+RETURNS CHAR(9)
+DETERMINISTIC
+BEGIN
+    DECLARE nif_base CHAR(8);
+    DECLARE nif CHAR(9);
+    DECLARE sum INT;
+    DECLARE check_digit INT;
+
+    SET nif_base = LPAD(FLOOR(RAND() * 100000000), 8, '0');
+
+    SET sum = 0;
+    SET sum = sum + SUBSTRING(nif_base, 1, 1) * 9;
+    SET sum = sum + SUBSTRING(nif_base, 2, 1) * 8;
+    SET sum = sum + SUBSTRING(nif_base, 3, 1) * 7;
+    SET sum = sum + SUBSTRING(nif_base, 4, 1) * 6;
+    SET sum = sum + SUBSTRING(nif_base, 5, 1) * 5;
+    SET sum = sum + SUBSTRING(nif_base, 6, 1) * 4;
+    SET sum = sum + SUBSTRING(nif_base, 7, 1) * 3;
+    SET sum = sum + SUBSTRING(nif_base, 8, 1) * 2;
+    
+    SET check_digit = 11 - (sum % 11);
+    
+    IF check_digit >= 10 THEN
+        SET check_digit = 0;
+    END IF;
+
+    SET nif = CONCAT(nif_base, check_digit);
+
+    RETURN nif;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
 DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosPessoas;
 
 CREATE PROCEDURE ExecutarInsercaoRegistosMultiplosPessoas(IN vezes INT)
@@ -75,10 +111,11 @@ BEGIN
     SET contador = 1;
 
     WHILE contador <= vezes DO
-        INSERT INTO TAB_pessoa (nome, sobrenome, data_nascimento) 
+        INSERT INTO TAB_pessoa (nome, sobrenome, NIF, data_nascimento) 
         VALUES (
 			obter_nome_aleatorio(), 
-            obter_sobrenome_aleatorio(), 
+            obter_sobrenome_aleatorio(),
+            ,
             DATE_SUB(CURRENT_DATE(), INTERVAL FLOOR(RAND() * (365 * (90 - 18) + 1) + (365 * 18)) DAY)
 		);
         SET contador = contador + 1;
@@ -145,6 +182,7 @@ BEGIN
         INSERT INTO TAB_funcionario (ID_pessoa, ID_profissao) 
         VALUES (
 			ID_funcionario_aleatorio,
+            ID_profissao_aleatorio
 		);
         SET contador = contador + 1;
     END WHILE;

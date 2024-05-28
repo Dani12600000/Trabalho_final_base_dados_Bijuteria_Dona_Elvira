@@ -147,3 +147,5 @@ SELECT p.ID, p.designacao, COUNT(f.ID) AS n_funcionarios
             ORDER BY 1 DESC
             LIMIT 1
 		);
+        
+SELECT gerar_nif();
