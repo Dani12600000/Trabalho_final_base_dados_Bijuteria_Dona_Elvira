@@ -26,3 +26,28 @@ VALUES
     ('Beatriz', 'Macedo', NULL, 'Teixeira'),
     ('Liliana', 'de', 'Oliveira', 'Pratas'),
     ('Francisco', 'Rafael', 'Santos', 'Casado');
+    
+
+INSERT INTO TAB_AUX_cargos_profissoes (ID_cargo, ID_profissao)
+VALUES
+	(2, ),
+    (3, ),
+    (4, ),
+    (5, ),
+    (6, ),
+    (7, ),
+    (8, ),
+    (9, ),
+    (10, ),
+    (11, ),
+    (12, ),
+    (13, ),
+    (14, ),
+    (15, ),
+    (16, ),
+    (17, ),
+    (18, ),
+    (19, ),
+    (20, ),
+    (21, ),
+    (22, );

@@ -139,7 +139,7 @@ CREATE TABLE TAB_relacoes_entre_unidades_tempo (
 CREATE TABLE TAB_contrato (
 	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     ID_funcionario INT NOT NULL,
-    data_hora_contratado DATE,
+    data_hora_contratado DATETIME,
     prazo_contrato INT,
     ID_unidade_tempo_prazo_contrato INT,
     data_hora_cancelado DATETIME,

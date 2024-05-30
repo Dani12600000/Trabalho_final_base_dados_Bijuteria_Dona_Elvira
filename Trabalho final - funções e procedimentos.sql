@@ -456,3 +456,21 @@ END;
 //
 
 DELIMITER ;
+
+DELIMITER //
+
+-- DROP FUNCTION IF EXISTS obter_contrato_mais_recente;
+
+CREATE FUNCTION obter_contrato_mais_recente(ID_funcionario_proc INT)
+RETURNS INT READS SQL DATA
+BEGIN
+    RETURN (SELECT c.ID
+		FROM TAB_contrato c
+				INNER JOIN TAB_unidades_tempo ut ON c.ID_unidade_tempo_prazo_contrato = ut.ID
+		WHERE c.ID_funcionario = ID_funcionario_proc AND (data_hora_cancelado IS NULL AND ID_funcionario_cancelou IS NULL)
+		ORDER BY data_hora_contratado ASC
+        LIMIT 1);
+END;
+//
+
+DELIMITER ;

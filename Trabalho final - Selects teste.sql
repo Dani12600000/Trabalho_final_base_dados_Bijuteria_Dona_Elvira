@@ -154,8 +154,10 @@ SELECT p.ID, p.designacao, COUNT(f.ID) AS n_funcionarios
             LIMIT 1
 		);
 	
-SELECT *
-	FROM TAB_contrato;
+SELECT c.ID, c.ID_funcionario, c.data_hora_contratado, c.prazo_contrato AS n_prazo_contrato, IF(c.prazo_contrato > 1, no_plural, no_singular) AS prazo_contrato, c.data_hora_cancelado, c.ID_funcionario_cancelou
+	FROM TAB_contrato c
+			INNER JOIN TAB_unidades_tempo ut ON c.ID_unidade_tempo_prazo_contrato = ut.ID
+    ORDER BY data_hora_contratado ASC;
     
 SELECT *
 	FROM TAB_unidades_tempo;
@@ -163,3 +165,13 @@ SELECT *
 SELECT *
 	FROM VIEW_hierarquia_ordenada_cargos;
     
+
+SELECT obter_contrato_mais_recente(4);
+
+SELECT *
+	FROM TAB_contrato c
+			INNER JOIN TAB_unidades_tempo ut ON c.ID_unidade_tempo_prazo_contrato = ut.ID
+	WHERE c.ID_funcionario = 4 AND (data_hora_cancelado IS NULL AND ID_funcionario_cancelou IS NULL)
+	ORDER BY data_hora_contratado DESC
+
+

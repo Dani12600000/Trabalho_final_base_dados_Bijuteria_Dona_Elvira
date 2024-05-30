@@ -206,7 +206,6 @@ VALUES
     ('Programador', 'Desenvolvimento de software e aplicativos - Nível Pleno', 1200.00),  -- Cargo base que correspondente à profissão de Programador
     ('Programador Sênior', 'Desenvolvimento de software e aplicativos - Nível Sênior', 1800.00),  -- Cargo base que correspondente à profissão de Programador
     ('Administrador de Redes', 'Gerenciamento e manutenção de redes', 0.00);  -- Cargo base que correspondente à profissão de Administrador de Redes
-
     
 INSERT INTO TAB_hierarquia (ID_cargo_atribuindo, ID_cargo_superior)
 VALUES
@@ -236,4 +235,5 @@ VALUES
     (24, 8),          -- Técnico em Gemologia -> Chefe de Armazém
     (25, 17),         -- Programador Júnior -> Consultor de TI
     (26, 17),         -- Programador Pleno -> Consultor de TI
-    (27, 17);         -- Programador Sênior -> Consultor de TI
+    (27, 17),         -- Programador Sênior -> Consultor de TI
+    (28, 5);		  -- Administrador de Redes -> Gerente de TI
