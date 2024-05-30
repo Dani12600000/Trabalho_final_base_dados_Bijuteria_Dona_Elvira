@@ -236,4 +236,5 @@ VALUES
     (25, 17),         -- Programador Júnior -> Consultor de TI
     (26, 17),         -- Programador Pleno -> Consultor de TI
     (27, 17),         -- Programador Sênior -> Consultor de TI
-    (28, 5);		  -- Administrador de Redes -> Gerente de TI
+    (28, 5),		  -- Administrador de Redes -> Gerente de TI
+    (22, 16);          -- Designer de Joias -> Gerente de Projetos

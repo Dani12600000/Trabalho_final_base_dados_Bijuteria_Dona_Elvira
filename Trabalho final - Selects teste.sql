@@ -175,3 +175,5 @@ SELECT *
 	ORDER BY data_hora_contratado DESC
 
 
+;
+
