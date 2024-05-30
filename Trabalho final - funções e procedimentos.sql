@@ -468,7 +468,24 @@ BEGIN
 		FROM TAB_contrato c
 				INNER JOIN TAB_unidades_tempo ut ON c.ID_unidade_tempo_prazo_contrato = ut.ID
 		WHERE c.ID_funcionario = ID_funcionario_proc AND (data_hora_cancelado IS NULL AND ID_funcionario_cancelou IS NULL)
-		ORDER BY data_hora_contratado ASC
+		ORDER BY data_hora_contratado DESC
+        LIMIT 1);
+END;
+//
+
+DELIMITER ;
+
+DELIMITER //
+
+-- DROP FUNCTION IF EXISTS obter_definicao_hierarquica_mais_recente;
+
+CREATE FUNCTION obter_definicao_hierarquica_mais_recente(ID_cargo_proc INT)
+RETURNS INT READS SQL DATA
+BEGIN
+    RETURN (SELECT ID
+		FROM TAB_hierarquia
+		WHERE ID_cargo_atribuindo = ID_cargo_proc
+		ORDER BY data_hora DESC
         LIMIT 1);
 END;
 //

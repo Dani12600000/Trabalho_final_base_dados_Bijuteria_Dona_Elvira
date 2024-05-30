@@ -27,7 +27,7 @@ VALUES
     ('Liliana', 'de', 'Oliveira', 'Pratas'),
     ('Francisco', 'Rafael', 'Santos', 'Casado');
     
-
+-- ACABAR 
 INSERT INTO TAB_AUX_cargos_profissoes (ID_cargo, ID_profissao)
 VALUES
 	(2, ),
@@ -50,4 +50,10 @@ VALUES
     (19, ),
     (20, ),
     (21, ),
-    (22, );
+    (22, ),
+    (23, ),
+    (24, ),
+    (25, ),
+    (26, ),
+    (27, ),
+    (28, );

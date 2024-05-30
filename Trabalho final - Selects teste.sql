@@ -177,3 +177,5 @@ SELECT *
 
 ;
 
+SELECT *
+	FROM TAB_promocoes_cargos;

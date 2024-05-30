@@ -174,7 +174,7 @@ INSERT INTO TAB_pessoa (nome, sobrenome, nif, data_nascimento)
 VALUE ('Elvira Maria', 'Silva Santos', '208581430', '1960-03-15');
 
 INSERT INTO TAB_funcionario (ID_pessoa, ID_profissao)
-VALUE ((SELECT MAX(ID) FROM TAB_pessoa), 2);
+VALUE ((SELECT MAX(ID) FROM TAB_pessoa), 1);
 
 INSERT INTO TAB_cargos (designacao, funcoes, salario_extra_cargo)
 VALUES
@@ -237,4 +237,8 @@ VALUES
     (26, 17),         -- Programador Pleno -> Consultor de TI
     (27, 17),         -- Programador Sênior -> Consultor de TI
     (28, 5),		  -- Administrador de Redes -> Gerente de TI
-    (22, 16);          -- Designer de Joias -> Gerente de Projetos
+    (22, 16);         -- Designer de Joias -> Gerente de Projetos
+    
+INSERT INTO TAB_promocoes_cargos (ID_funcionario_promovido, ID_cargo)
+VALUE
+	(1, 1)

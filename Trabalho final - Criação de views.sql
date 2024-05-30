@@ -53,7 +53,8 @@ SELECT f.ID AS ID_funcionario,
 		pe.ID AS ID_pessoa, 
         pe.nome AS nome,
         pe.sobrenome AS sobrenome,
-        pe.data_nascimento AS data_nascimento,
+        DATE_FORMAT(pe.data_nascimento, "%d-%m-%Y") AS data_nascimento,
+        TIMESTAMPDIFF(year,pe.data_nascimento, CURRENT_DATE()) AS idade,
         pe.NIF AS NIF,
         pr.designacao AS profissao,
         
@@ -68,7 +69,7 @@ SELECT f.ID AS ID_funcionario,
 			INNER JOIN TAB_pessoa pe ON f.ID_pessoa = pe.ID
             INNER JOIN TAB_profissao pr ON f.ID_profissao = pr.ID
             -- Falta ligar a tabela promocoes_cargos que sera feita com uma view e com ela poderei ligar no inner join abaixo
-            INNER JOIN VIEW_hierarquia_ordenada_cargos_atual vhoca ON .ID = vhoca.ID_cargo_atribuindo
+            -- INNER JOIN VIEW_hierarquia_ordenada_cargos_atual vhoca ON .ID = vhoca.ID_cargo_atribuindo
             INNER JOIN TAB_contrato c ON obter_contrato_mais_recente(f.ID) = c.ID
             INNER JOIN TAB_unidades_tempo ut ON c.ID_unidade_tempo_prazo_contrato = ut.ID
             -- INNER JOIN TAB_experiencia exp ON f.ID = exp.ID
