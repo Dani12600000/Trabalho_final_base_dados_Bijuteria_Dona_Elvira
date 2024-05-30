@@ -227,7 +227,7 @@ CREATE TABLE TAB_dia_feriado (
 CREATE TABLE TAB_horario (
 	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     data_entrada_vigor DATE NOT NULL DEFAULT (DATE_ADD(CURRENT_DATE(), INTERVAL 1 WEEK)),
-    ID_feriado INT NOT NULL,
+    ID_feriado INT,
     ID_instalacoes INT NOT NULL,
     FOREIGN KEY (ID_feriado) REFERENCES TAB_feriado(ID),
     FOREIGN KEY (ID_instalacoes) REFERENCES TAB_instalacoes(ID)

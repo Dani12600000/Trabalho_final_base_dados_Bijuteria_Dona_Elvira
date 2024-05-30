@@ -21,4 +21,8 @@ VALUES
     ('Gabriel', 'Duarte', 'Vieira', 'Santos'),
     ('Lorena', 'Sophia', 'Nunes', 'Silva'),
     ('Gustavo', 'Lucas', 'Carvalho', 'Martins'),
-    ('Aline', 'Carolina', 'Lima', 'Alves');
+    ('Aline', 'Carolina', 'Lima', 'Alves'),
+    ('Daniel', 'Oliveira', NULL, 'Pereira'),
+    ('Beatriz', 'Macedo', NULL, 'Teixeira'),
+    ('Liliana', 'de', 'Oliveira', 'Pratas'),
+    ('Francisco', 'Rafael', 'Santos', 'Casado');

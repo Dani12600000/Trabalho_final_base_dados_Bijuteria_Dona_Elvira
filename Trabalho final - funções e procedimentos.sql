@@ -9,8 +9,7 @@ RETURNS VARCHAR(255) READS SQL DATA
 BEGIN
     DECLARE primeiro_nome_aleatorio NVARCHAR(50);
     DECLARE segundo_nome_aleatorio NVARCHAR(50);
-    DECLARE terceiro_nome_aleatorio NVARCHAR(50);
-    DECLARE quarto_nome_aleatorio NVARCHAR(50);
+    DECLARE nome NVARCHAR(110);
 
     SELECT primeiro_nome INTO primeiro_nome_aleatorio
     FROM TAB_AUX_pessoa
@@ -22,17 +21,13 @@ BEGIN
     ORDER BY RAND()
     LIMIT 1;
     
-    SELECT terceiro_nome INTO terceiro_nome_aleatorio
-    FROM TAB_AUX_pessoa
-    ORDER BY RAND()
-    LIMIT 1;
-    
-    SELECT quarto_nome INTO quarto_nome_aleatorio
-    FROM TAB_AUX_pessoa
-    ORDER BY RAND()
-    LIMIT 1;
+    IF segundo_nome_aleatorio IS NULL THEN
+		SET nome = primeiro_nome_aleatorio;
+	ELSE
+		SET nome = CONCAT(primeiro_nome_aleatorio, ' ', segundo_nome_aleatorio);
+	END IF;
 
-    RETURN CONCAT(primeiro_nome_aleatorio, ' ', segundo_nome_aleatorio);
+    RETURN nome;
 END;
 //
 
@@ -65,6 +60,8 @@ END;
 DELIMITER ;
 
 DELIMITER //
+
+DROP FUNCTION IF EXISTS gerar_nif;
 
 CREATE FUNCTION gerar_nif()
 RETURNS CHAR(9)
@@ -115,7 +112,7 @@ BEGIN
         VALUES (
 			obter_nome_aleatorio(), 
             obter_sobrenome_aleatorio(),
-            ,
+            gerar_nif(),
             DATE_SUB(CURRENT_DATE(), INTERVAL FLOOR(RAND() * (365 * (90 - 18) + 1) + (365 * 18)) DAY)
 		);
         SET contador = contador + 1;

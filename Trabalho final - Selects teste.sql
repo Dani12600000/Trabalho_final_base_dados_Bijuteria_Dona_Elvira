@@ -11,6 +11,7 @@ SELECT obter_nome_aleatorio(), obter_sobrenome_aleatorio();
 SELECT *
 	FROM TAB_pessoa;
     
+    
 SELECT *
 	FROM TAB_cliente
     WHERE ID_pessoa = 914;
@@ -148,4 +149,3 @@ SELECT p.ID, p.designacao, COUNT(f.ID) AS n_funcionarios
             LIMIT 1
 		);
         
-SELECT gerar_nif();

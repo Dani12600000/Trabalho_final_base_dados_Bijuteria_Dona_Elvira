@@ -21,11 +21,18 @@ SELECT c.ID AS ID_cliente,
 		END AS documento_identificacao,
 		CASE
 			WHEN ic.ID IS NULL AND pa.ID IS NOT NULL THEN "---"
-            WHEN ic.ID IS NOT NULL AND pa.ID IS NULL THEN ic.NIF
+            WHEN ic.ID IS NOT NULL AND pa.ID IS NULL THEN pe.NIF
             ELSE "---"
 		END AS NIF
         
 	FROM TAB_cliente c 
 			INNER JOIN TAB_pessoa pe ON c.ID_pessoa = pe.ID
             LEFT JOIN TAB_informacoes_cidadao ic ON pe.ID = ic.ID_pessoa
-            LEFT JOIN TAB_passaporte pa ON pe.ID = pa.ID_pessoa
+            LEFT JOIN TAB_passaporte pa ON pe.ID = pa.ID_pessoa;
+            
+	
+
+-- ACABAR 
+
+SELECT *
+	FROM TAB_
