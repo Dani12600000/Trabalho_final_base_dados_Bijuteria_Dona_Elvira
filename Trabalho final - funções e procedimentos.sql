@@ -2,7 +2,7 @@ USE DB_Bijuteria_Dona_Elvira;
 
 DELIMITER //
 
-DROP FUNCTION IF EXISTS obter_nome_aleatorio;
+-- DROP FUNCTION IF EXISTS obter_nome_aleatorio;
 
 CREATE FUNCTION obter_nome_aleatorio()
 RETURNS VARCHAR(255) READS SQL DATA
@@ -35,7 +35,7 @@ DELIMITER ;
 
 DELIMITER //
 
-DROP FUNCTION IF EXISTS obter_sobrenome_aleatorio;
+-- DROP FUNCTION IF EXISTS obter_sobrenome_aleatorio;
 
 CREATE FUNCTION obter_sobrenome_aleatorio()
 RETURNS VARCHAR(255) READS SQL DATA
@@ -68,7 +68,7 @@ DELIMITER ;
 
 DELIMITER //
 
-DROP FUNCTION IF EXISTS gerar_nif;
+-- DROP FUNCTION IF EXISTS gerar_nif;
 
 CREATE FUNCTION gerar_nif()
 RETURNS CHAR(9)
@@ -106,7 +106,7 @@ DELIMITER ;
 
 DELIMITER //
 
-DROP FUNCTION IF EXISTS gerar_cc;
+-- DROP FUNCTION IF EXISTS gerar_cc;
 
 CREATE FUNCTION gerar_cc()
 RETURNS CHAR(12)
@@ -133,7 +133,7 @@ DELIMITER ;
 
 DELIMITER //
 
-DROP FUNCTION IF EXISTS gerar_passaporte;
+-- DROP FUNCTION IF EXISTS gerar_passaporte;
 
 CREATE FUNCTION gerar_passaporte()
 RETURNS CHAR(9)
@@ -162,7 +162,7 @@ DELIMITER ;
 
 DELIMITER //
 
-DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosPessoas;
+-- DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosPessoas;
 
 CREATE PROCEDURE ExecutarInsercaoRegistosMultiplosPessoas(IN vezes INT)
 BEGIN
@@ -187,7 +187,7 @@ DELIMITER ;
 
 DELIMITER //
 
-DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosClientes;
+-- DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosClientes;
 
 CREATE PROCEDURE ExecutarInsercaoRegistosMultiplosClientes(IN vezes INT)
 BEGIN
@@ -217,7 +217,7 @@ DELIMITER ;
 
 DELIMITER //
 
-DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosFuncionarios;
+-- DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosFuncionarios;
 
 CREATE PROCEDURE ExecutarInsercaoRegistosMultiplosFuncionarios(IN vezes INT)
 BEGIN
@@ -253,7 +253,7 @@ DELIMITER ;
 
 DELIMITER //
 
-DROP FUNCTION IF EXISTS existem_pessoas_com_mais_1_conta_cliente;
+-- DROP FUNCTION IF EXISTS existem_pessoas_com_mais_1_conta_cliente;
 
 CREATE FUNCTION existem_pessoas_com_mais_1_conta_cliente(ID_pessoa_avaliar INT)
 RETURNS BOOLEAN READS SQL DATA
@@ -278,7 +278,7 @@ DELIMITER ;
 
 DELIMITER //
 
-DROP PROCEDURE IF EXISTS ApagarRegistosRepetidosClientes;
+-- DROP PROCEDURE IF EXISTS ApagarRegistosRepetidosClientes;
 
 CREATE PROCEDURE ApagarRegistosRepetidosClientes()
 BEGIN
@@ -311,7 +311,7 @@ DELIMITER ;
 
 DELIMITER //
 
-DROP FUNCTION IF EXISTS proxima_data;
+-- DROP FUNCTION IF EXISTS proxima_data;
 
 CREATE FUNCTION proxima_data(data_verificar date)
 RETURNS DATE READS SQL DATA
@@ -335,7 +335,7 @@ DELIMITER ;
 
 DELIMITER //
 
-DROP FUNCTION IF EXISTS dia_feriado_muda_cada_ano;
+-- DROP FUNCTION IF EXISTS dia_feriado_muda_cada_ano;
 
 CREATE FUNCTION dia_feriado_muda_cada_ano(ID_feriado_into INT)
 RETURNS BOOL READS SQL DATA
@@ -362,7 +362,7 @@ DELIMITER ;
 
 DELIMITER //
 
-DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosCidadoes;
+-- DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosCidadoes;
 
 CREATE PROCEDURE ExecutarInsercaoRegistosMultiplosCidadoes(IN vezes INT)
 BEGIN
@@ -393,7 +393,7 @@ DELIMITER ;
 
 DELIMITER //
 
-DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosEstrangeiros;
+-- DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosEstrangeiros;
 
 CREATE PROCEDURE ExecutarInsercaoRegistosMultiplosEstrangeiros(IN vezes INT)
 BEGIN
@@ -415,6 +415,41 @@ BEGIN
 			ID_pessoa_aleatoria,
             gerar_passaporte()
 		);
+        SET contador = contador + 1;
+    END WHILE;
+END;
+//
+
+DELIMITER ;
+
+DELIMITER //
+
+-- DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosContratosAtuaisFuncionarios;
+
+CREATE PROCEDURE ExecutarInsercaoRegistosMultiplosContratosAtuaisFuncionarios()
+BEGIN
+    DECLARE contador INT;
+    DECLARE id_funcionario_selecionado INT;
+    DECLARE random_date DATETIME;
+    
+    SET contador = 1;
+
+    WHILE contador <= (SELECT MAX(ID) FROM TAB_funcionario) DO
+        SELECT ID INTO id_funcionario_selecionado FROM TAB_funcionario WHERE ID = contador;
+        
+        IF id_funcionario_selecionado IS NOT NULL THEN
+			
+            SET random_date = DATE_SUB(NOW(), INTERVAL FLOOR(RAND() * (90 * 60 * 60) + 1) MINUTE);
+        
+            INSERT INTO TAB_contrato (ID_funcionario, data_hora_contratado, prazo_contrato, ID_unidade_tempo_prazo_contrato) 
+            VALUES (
+                id_funcionario_selecionado,
+                random_date,
+                1,
+                7 -- Anos, ou seja 1 ano
+            );
+        END IF;
+
         SET contador = contador + 1;
     END WHILE;
 END;

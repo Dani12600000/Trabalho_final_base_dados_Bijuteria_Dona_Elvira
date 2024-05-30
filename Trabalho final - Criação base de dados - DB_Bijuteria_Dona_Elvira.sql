@@ -142,8 +142,8 @@ CREATE TABLE TAB_contrato (
     data_hora_contratado DATE,
     prazo_contrato INT,
     ID_unidade_tempo_prazo_contrato INT,
-    data_hora_cancelado DATETIME NOT NULL DEFAULT (NOW()),
-    ID_funcionario_cancelou INT NOT NULL,
+    data_hora_cancelado DATETIME,
+    ID_funcionario_cancelou INT,
     FOREIGN KEY (ID_funcionario) REFERENCES TAB_funcionario(ID),
     FOREIGN KEY (ID_funcionario_cancelou) REFERENCES TAB_funcionario(ID),
     FOREIGN KEY (ID_unidade_tempo_prazo_contrato) REFERENCES TAB_unidades_tempo(ID)
@@ -160,6 +160,7 @@ CREATE TABLE TAB_hierarquia (
 	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     ID_cargo_atribuindo INT NOT NULL,
     ID_cargo_superior INT, -- Se vazio quer dizer que não tem superior, ou seja esse cargo é o mais alto de todos
+    data_hora DATETIME NOT NULL DEFAULT (NOW()),
     FOREIGN KEY (ID_cargo_superior) REFERENCES TAB_cargos(ID),
     FOREIGN KEY (ID_cargo_atribuindo) REFERENCES TAB_cargos(ID)
 );

@@ -3,7 +3,6 @@ USE DB_Bijuteria_Dona_Elvira;
 INSERT INTO TAB_profissao (designacao, salario_base)
 VALUES
     ('Vendedor', 800.00),
-    ('Gerente de Loja', 1500.00),
     ('Designer de Joias', 2000.00),
     ('Ourives', 1800.00),
     ('Consultor de Vendas', 900.00),
@@ -13,6 +12,7 @@ VALUES
     ('Programador', 1800.00),
     ('Analista de Sistemas', 2000.00),
     ('Administrador de Redes', 2200.00);
+
     
 INSERT INTO TAB_tipo_instalacoes (designacao, descricao)
 VALUES
@@ -174,4 +174,66 @@ INSERT INTO TAB_pessoa (nome, sobrenome, nif, data_nascimento)
 VALUE ('Elvira Maria', 'Silva Santos', '208581430', '1960-03-15');
 
 INSERT INTO TAB_funcionario (ID_pessoa, ID_profissao)
-VALUE ((SELECT MAX(ID) FROM TAB_pessoa), 2)
+VALUE ((SELECT MAX(ID) FROM TAB_pessoa), 2);
+
+INSERT INTO TAB_cargos (designacao, funcoes, salario_extra_cargo)
+VALUES
+    ('CEO', 'Responsável pela gestão geral da empresa e decisões estratégicas', 5000.00),
+    ('Diretor Financeiro', 'Responsável pela gestão financeira da empresa', 4000.00),
+    ('Diretor de Marketing', 'Responsável pelas estratégias de marketing e promoção', 3500.00),
+    ('Gerente de Recursos Humanos', 'Responsável pela gestão do departamento de RH', 2500.00),
+    ('Gerente de TI', 'Responsável pela gestão da infraestrutura de TI', 3000.00),
+    ('Gerente de Operações', 'Responsável pela supervisão das operações diárias', 3200.00),
+    ('Gerente de Loja', 'Responsável pela gestão e operação de uma loja específica', 1500.00),
+    ('Chefe de Armazém', 'Responsável pela supervisão do armazém e controle de estoque', 2000.00),
+    ('Supervisor de Vendas', 'Responsável pela supervisão da equipe de vendas', 1800.00),
+    ('Assistente Executivo', 'Apoio administrativo aos executivos da empresa', 1200.00),
+    ('Coordenador de Logística', 'Responsável pela coordenação das atividades logísticas', 2100.00),
+    ('Analista de Marketing', 'Análise e execução de campanhas de marketing', 1500.00),
+    ('Especialista em SEO', 'Otimização do site e conteúdo para motores de busca', 1700.00),
+    ('Coordenador de Vendas', 'Coordenar atividades e estratégias de vendas', 2000.00),
+    ('Chefe de Produção', 'Supervisionar e coordenar a produção de bijuterias', 2300.00),
+    ('Gerente de Projetos', 'Gerenciar e coordenar projetos específicos', 2500.00),
+    ('Consultor de TI', 'Fornecer consultoria técnica e suporte de TI', 2200.00),
+    ('Líder de Equipe de Design', 'Liderar a equipe de designers de joias', 2400.00),
+    ('Coordenador de Segurança da Informação', 'Responsável pela segurança dos dados e informações', 2600.00),
+    ('Chefe de Atendimento ao Cliente', 'Supervisionar e coordenar a equipe de atendimento ao cliente', 1900.00),
+    ('Ourives', 'Fabricação e design de joias', 1800.00),  -- Cargo base que correspondente à profissão de Ourives
+    ('Designer de Joias', 'Design e criação de joias', 2000.00),  -- Cargo base que correspondente à profissão de Designer de Joias
+    ('Vendedor', 'Venda e assistência ao cliente', 800.00),  -- Cargo base que correspondente à profissão de Vendedor
+    ('Técnico de Gemologia', 'Análise e avaliação de gemas', 2200.00),  -- Cargo base que correspondente à profissão de Técnico de Gemologia
+    ('Programador Júnior', 'Desenvolvimento de software e aplicativos - Nível Júnior', 1500.00),  -- Cargo base que correspondente à profissão de Programador
+    ('Programador', 'Desenvolvimento de software e aplicativos - Nível Pleno', 2000.00),  -- Cargo base que correspondente à profissão de Programador
+    ('Programador Sênior', 'Desenvolvimento de software e aplicativos - Nível Sênior', 2500.00),  -- Cargo base que correspondente à profissão de Programador
+    ('Administrador de Redes', 'Gerenciamento e manutenção de redes', 2200.00);  -- Cargo base que correspondente à profissão de Administrador de Redes
+
+    
+INSERT INTO TAB_hierarquia (ID_cargo_atribuindo, ID_cargo_superior)
+VALUES
+    (1, NULL),        -- CEO
+    (2, 1),           -- Diretor Financeiro -> CEO
+    (3, 1),           -- Diretor de Marketing -> CEO
+    (4, 1),           -- Gerente de Recursos Humanos -> CEO
+    (5, 1),           -- Gerente de TI -> CEO
+    (6, 1),           -- Gerente de Operações -> CEO
+    (7, 6),           -- Gerente de Loja -> Gerente de Operações
+    (8, 6),           -- Chefe de Armazém -> Gerente de Operações
+    (9, 6),           -- Supervisor de Vendas -> Gerente de Operações
+    (10, 1),          -- Assistente Executivo -> CEO
+    (11, 8),          -- Coordenador de Logística -> Chefe de Armazém
+    (12, 3),          -- Analista de Marketing -> Diretor de Marketing
+    (13, 3),          -- Especialista em SEO -> Diretor de Marketing
+    (14, 9),          -- Coordenador de Vendas -> Supervisor de Vendas
+    (15, 6),          -- Chefe de Produção -> Gerente de Operações
+    (16, 1),          -- Gerente de Projetos -> CEO
+    (17, 5),          -- Consultor de TI -> Gerente de TI
+    (18, 3),          -- Líder de Equipe de Design -> Diretor de Marketing
+    (19, 5),          -- Coordenador de Segurança da Informação -> Gerente de TI
+    (20, 6),          -- Chefe de Atendimento ao Cliente -> Gerente de Operações
+    (21, 7),          -- Ourives -> Gerente de Loja
+    (22, 7),          -- Designer de Joias -> Gerente de Loja
+    (23, 7),          -- Vendedor -> Gerente de Loja
+    (24, 8),          -- Técnico em Gemologia -> Chefe de Armazém
+    (25, 17),         -- Programador Júnior -> Consultor de TI
+    (26, 17),         -- Programador Pleno -> Consultor de TI
+    (27, 17);         -- Programador Sênior -> Consultor de TI

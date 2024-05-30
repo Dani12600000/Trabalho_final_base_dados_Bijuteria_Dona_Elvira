@@ -153,4 +153,13 @@ SELECT p.ID, p.designacao, COUNT(f.ID) AS n_funcionarios
             ORDER BY 1 DESC
             LIMIT 1
 		);
-        
+	
+SELECT *
+	FROM TAB_contrato;
+    
+SELECT *
+	FROM TAB_unidades_tempo;
+
+SELECT *
+	FROM VIEW_hierarquia_ordenada_cargos;
+    

@@ -2,7 +2,7 @@ USE DB_Bijuteria_Dona_Elvira;
 
 DELIMITER //
 
-DROP EVENT IF EXISTS verifica_aniversariantes;
+-- DROP EVENT IF EXISTS verifica_aniversariantes;
 
 CREATE EVENT verifica_aniversariantes
 ON SCHEDULE EVERY 1 DAY
@@ -38,7 +38,7 @@ CREATE TABLE IF NOT EXISTS logs_clientes (
 
 DELIMITER //
 
-DROP TRIGGER IF EXISTS adicao_cliente;
+-- DROP TRIGGER IF EXISTS adicao_cliente;
 
 CREATE TRIGGER adicao_cliente AFTER INSERT ON TAB_cliente
 FOR EACH ROW 
@@ -54,7 +54,7 @@ BEGIN
 END;
 //
 
-DROP TRIGGER IF EXISTS remocao_cliente;
+-- DROP TRIGGER IF EXISTS remocao_cliente;
 
 CREATE TRIGGER remocao_cliente AFTER DELETE ON TAB_cliente
 FOR EACH ROW 
@@ -70,7 +70,7 @@ BEGIN
 END;
 //
 
-DROP TRIGGER IF EXISTS update_cliente;
+-- DROP TRIGGER IF EXISTS update_cliente;
 
 CREATE TRIGGER update_cliente AFTER UPDATE ON TAB_cliente
 FOR EACH ROW 
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS logs_pessoas (
 
 DELIMITER //
 
-DROP TRIGGER IF EXISTS adicao_pessoa;
+-- DROP TRIGGER IF EXISTS adicao_pessoa;
 
 CREATE TRIGGER adicao_pessoa AFTER INSERT ON TAB_pessoa
 FOR EACH ROW 
@@ -105,7 +105,7 @@ BEGIN
 END;
 //
 
-DROP TRIGGER IF EXISTS remocao_pessoa;
+-- DROP TRIGGER IF EXISTS remocao_pessoa;
 
 CREATE TRIGGER remocao_pessoa AFTER DELETE ON TAB_pessoa
 FOR EACH ROW 
@@ -119,7 +119,7 @@ DELIMITER ;
 
 DELIMITER //
 
-DROP TRIGGER IF EXISTS update_pessoa;
+-- DROP TRIGGER IF EXISTS update_pessoa;
 
 CREATE TRIGGER update_pessoa AFTER UPDATE ON TAB_pessoa
 FOR EACH ROW 
