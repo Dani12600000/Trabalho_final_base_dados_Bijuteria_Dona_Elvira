@@ -42,6 +42,7 @@ RETURNS VARCHAR(255) READS SQL DATA
 BEGIN
     DECLARE terceiro_nome_aleatorio NVARCHAR(50);
     DECLARE quarto_nome_aleatorio NVARCHAR(50);
+    DECLARE sobrenome NVARCHAR(110);
     
     SELECT terceiro_nome INTO terceiro_nome_aleatorio
     FROM TAB_AUX_pessoa
@@ -52,8 +53,14 @@ BEGIN
     FROM TAB_AUX_pessoa
     ORDER BY RAND()
     LIMIT 1;
+    
+    IF terceiro_nome_aleatorio IS NULL THEN
+		SET sobrenome = quarto_nome_aleatorio;
+	ELSE
+		SET sobrenome = CONCAT(terceiro_nome_aleatorio, ' ', quarto_nome_aleatorio);
+	END IF;
 
-    RETURN CONCAT(terceiro_nome_aleatorio, ' ', quarto_nome_aleatorio);
+    RETURN sobrenome;
 END;
 //
 
@@ -96,6 +103,62 @@ BEGIN
 END //
 
 DELIMITER ;
+
+DELIMITER //
+
+DROP FUNCTION IF EXISTS gerar_cc;
+
+CREATE FUNCTION gerar_cc()
+RETURNS CHAR(12)
+DETERMINISTIC
+BEGIN
+    DECLARE letras CHAR(2);
+    DECLARE numeros CHAR(9);
+    DECLARE cc CHAR(12);
+
+    -- Gerar duas letras aleatórias (A-Z)
+    SET letras = CHAR(FLOOR(65 + RAND() * 26));
+    SET letras = CONCAT(letras, CHAR(FLOOR(65 + RAND() * 26)));
+
+    -- Gerar nove números aleatórios (0-9)
+    SET numeros = LPAD(FLOOR(RAND() * 1000000000), 9, '0');
+
+    -- Concatenar letras e números para formar o ID do CC
+    SET cc = CONCAT(letras, numeros);
+
+    RETURN cc;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+DROP FUNCTION IF EXISTS gerar_passaporte;
+
+CREATE FUNCTION gerar_passaporte()
+RETURNS CHAR(9)
+DETERMINISTIC
+BEGIN
+    DECLARE letras CHAR(3);
+    DECLARE numeros CHAR(6);
+    DECLARE passaporte CHAR(9);
+
+    -- Gerar três letras aleatórias (A-Z)
+    SET letras = CHAR(FLOOR(65 + RAND() * 26));
+    SET letras = CONCAT(letras, CHAR(FLOOR(65 + RAND() * 26)));
+    SET letras = CONCAT(letras, CHAR(FLOOR(65 + RAND() * 26)));
+
+    -- Gerar seis números aleatórios (0-9)
+    SET numeros = LPAD(FLOOR(RAND() * 1000000), 6, '0');
+
+    -- Concatenar letras e números para formar o ID do passaporte
+    SET passaporte = CONCAT(letras, numeros);
+
+    RETURN passaporte;
+END //
+
+DELIMITER ;
+
 
 DELIMITER //
 
@@ -292,6 +355,68 @@ BEGIN
     END IF;
 
     RETURN repete;
+END;
+//
+
+DELIMITER ;
+
+DELIMITER //
+
+DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosCidadoes;
+
+CREATE PROCEDURE ExecutarInsercaoRegistosMultiplosCidadoes(IN vezes INT)
+BEGIN
+    DECLARE contador INT;
+	DECLARE ID_pessoa_aleatoria INT;
+    
+    SET contador = 1;
+
+    WHILE contador <= vezes DO
+		SELECT ID INTO ID_pessoa_aleatoria
+			FROM TAB_pessoa 
+            WHERE ID NOT IN (SELECT ID_pessoa FROM TAB_passaporte)
+            ORDER BY RAND()
+			LIMIT 1;
+    
+    
+        INSERT INTO TAB_informacoes_cidadao (ID_pessoa, CC) 
+        VALUES (
+			ID_pessoa_aleatoria,
+            gerar_cc()
+		);
+        SET contador = contador + 1;
+    END WHILE;
+END;
+//
+
+DELIMITER ;
+
+DELIMITER //
+
+DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosEstrangeiros;
+
+CREATE PROCEDURE ExecutarInsercaoRegistosMultiplosEstrangeiros(IN vezes INT)
+BEGIN
+    DECLARE contador INT;
+	DECLARE ID_pessoa_aleatoria INT;
+    
+    SET contador = 1;
+
+    WHILE contador <= vezes DO
+		SELECT ID INTO ID_pessoa_aleatoria
+			FROM TAB_pessoa 
+            WHERE ID NOT IN (SELECT ID_pessoa FROM TAB_informacoes_cidadao)
+            ORDER BY RAND()
+			LIMIT 1;
+    
+    
+        INSERT INTO TAB_passaporte (ID_pessoa, ID_passaporte) 
+        VALUES (
+			ID_pessoa_aleatoria,
+            gerar_passaporte()
+		);
+        SET contador = contador + 1;
+    END WHILE;
 END;
 //
 
