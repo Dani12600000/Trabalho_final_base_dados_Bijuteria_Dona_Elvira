@@ -8,6 +8,7 @@ SELECT c.ID AS ID_cliente,
 		pe.nome, 
 		pe.sobrenome, 
 		pe.data_nascimento, 
+        pe.NIF,
         DATE_FORMAT(c.data_hora_registo, "%d-%m-%Y %H:%i:%s") AS data_hora_registado_cliente,
         CASE 
 			WHEN ic.ID IS NULL AND pa.ID IS NOT NULL THEN "Estrangeiro"
@@ -18,13 +19,7 @@ SELECT c.ID AS ID_cliente,
 			WHEN ic.ID IS NULL AND pa.ID IS NOT NULL THEN pa.ID_passaporte
             WHEN ic.ID IS NOT NULL AND pa.ID IS NULL THEN ic.CC
             ELSE "---"
-		END AS documento_identificacao,
-		CASE
-			WHEN ic.ID IS NULL AND pa.ID IS NOT NULL THEN "---"
-            WHEN ic.ID IS NOT NULL AND pa.ID IS NULL THEN pe.NIF
-            ELSE "---"
-		END AS NIF
-        
+		END AS documento_identificacao
 	FROM TAB_cliente c 
 			INNER JOIN TAB_pessoa pe ON c.ID_pessoa = pe.ID
             LEFT JOIN TAB_informacoes_cidadao ic ON pe.ID = ic.ID_pessoa

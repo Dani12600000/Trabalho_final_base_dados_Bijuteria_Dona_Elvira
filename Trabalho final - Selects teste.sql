@@ -50,6 +50,11 @@ SELECT *
 SELECT *
 	FROM VIEW_informacoes_cliente;
     
+SELECT NIF, COUNT(*)
+	FROM TAB_pessoa
+    GROUP BY NIF
+    HAVING COUNT(*) > 1;
+    
 SELECT *
 	FROM logs_clientes
     ORDER BY data_hora DESC, ID ASC;
