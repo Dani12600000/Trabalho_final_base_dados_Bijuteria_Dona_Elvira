@@ -1,6 +1,6 @@
 USE DB_Bijuteria_Dona_Elvira;
 
-DROP VIEW IF EXISTS VIEW_informacoes_cliente;
+-- DROP VIEW IF EXISTS VIEW_informacoes_cliente;
 
 CREATE VIEW VIEW_informacoes_cliente AS
 SELECT c.ID AS ID_cliente,
@@ -25,30 +25,7 @@ SELECT c.ID AS ID_cliente,
             LEFT JOIN TAB_informacoes_cidadao ic ON pe.ID = ic.ID_pessoa
             LEFT JOIN TAB_passaporte pa ON pe.ID = pa.ID_pessoa;
             
-DROP VIEW IF EXISTS VIEW_informacoes_funcionario;
-
-CREATE VIEW VIEW_informacoes_funcionario AS
-SELECT f.ID AS ID_funcionario, 
-		pe.ID AS ID_pessoa, 
-        pe.nome AS nome,
-        pe.sobrenome AS sobrenome,
-        pe.data_nascimento AS data_nascimento,
-        pe.NIF AS NIF,
-        pr.designacao AS profissao
-	FROM TAB_funcionario f
-			INNER JOIN TAB_pessoa pe ON f.ID_pessoa = pe.ID
-            INNER JOIN TAB_profissao pr ON f.ID_profissao = pr.ID
-            INNER JOIN TAB_contrato c ON f.ID = c.ID_funcionario
-            INNER JOIN TAB_unidades_tempo ut ON c.ID_unidades_tempo_prazo_contrato = ut.ID
-            INNER JOIN TAB_experiencia exp ON f.ID = exp.ID
-            INNER JOIN TAB_promocoes_cargos pc_promovido ON f.ID = pc_promovido.ID_funcionario_promovido
             
-            
-
-
-;
-
-
 CREATE VIEW VIEW_hierarquia_ordenada_cargos AS
 WITH RECURSIVE HierarquiaCompleta AS (
     SELECT h.ID, h.ID_cargo_atribuindo, h.ID_cargo_superior, 0 AS distancia
@@ -66,7 +43,29 @@ SELECT hc.ID, hc.ID_cargo_atribuindo, ca.designacao AS des_cargo, hc.ID_cargo_su
 FROM HierarquiaCompleta hc
 INNER JOIN TAB_cargos ca ON hc.ID_cargo_atribuindo = ca.ID
 LEFT JOIN TAB_cargos cs ON hc.ID_cargo_superior = cs.ID
-ORDER BY hc.distancia ASC;
+ORDER BY hc.distancia ASC;            
+
+            
+-- DROP VIEW IF EXISTS VIEW_informacoes_funcionario;
+
+CREATE VIEW VIEW_informacoes_funcionario AS
+SELECT f.ID AS ID_funcionario, 
+		pe.ID AS ID_pessoa, 
+        pe.nome AS nome,
+        pe.sobrenome AS sobrenome,
+        pe.data_nascimento AS data_nascimento,
+        pe.NIF AS NIF,
+        pr.designacao AS profissao
+	FROM TAB_funcionario f
+			INNER JOIN TAB_pessoa pe ON f.ID_pessoa = pe.ID
+            INNER JOIN TAB_profissao pr ON f.ID_profissao = pr.ID
+            INNER JOIN TAB_contrato c ON f.ID = c.ID_funcionario
+            INNER JOIN TAB_unidades_tempo ut ON c.ID_unidades_tempo_prazo_contrato = ut.ID
+            INNER JOIN TAB_experiencia exp ON f.ID = exp.ID
+            INNER JOIN TAB_promocoes_cargos pc_promovido ON f.ID = pc_promovido.ID_funcionario_promovido
+            
+
+;
 
 
 -- ACABAR 

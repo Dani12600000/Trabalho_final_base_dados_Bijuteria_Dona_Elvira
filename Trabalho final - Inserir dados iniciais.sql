@@ -178,34 +178,34 @@ VALUE ((SELECT MAX(ID) FROM TAB_pessoa), 2);
 
 INSERT INTO TAB_cargos (designacao, funcoes, salario_extra_cargo)
 VALUES
-    ('CEO', 'Responsável pela gestão geral da empresa e decisões estratégicas', 5000.00),
-    ('Diretor Financeiro', 'Responsável pela gestão financeira da empresa', 4000.00),
-    ('Diretor de Marketing', 'Responsável pelas estratégias de marketing e promoção', 3500.00),
-    ('Gerente de Recursos Humanos', 'Responsável pela gestão do departamento de RH', 2500.00),
-    ('Gerente de TI', 'Responsável pela gestão da infraestrutura de TI', 3000.00),
-    ('Gerente de Operações', 'Responsável pela supervisão das operações diárias', 3200.00),
-    ('Gerente de Loja', 'Responsável pela gestão e operação de uma loja específica', 1500.00),
-    ('Chefe de Armazém', 'Responsável pela supervisão do armazém e controle de estoque', 2000.00),
-    ('Supervisor de Vendas', 'Responsável pela supervisão da equipe de vendas', 1800.00),
-    ('Assistente Executivo', 'Apoio administrativo aos executivos da empresa', 1200.00),
-    ('Coordenador de Logística', 'Responsável pela coordenação das atividades logísticas', 2100.00),
-    ('Analista de Marketing', 'Análise e execução de campanhas de marketing', 1500.00),
-    ('Especialista em SEO', 'Otimização do site e conteúdo para motores de busca', 1700.00),
-    ('Coordenador de Vendas', 'Coordenar atividades e estratégias de vendas', 2000.00),
-    ('Chefe de Produção', 'Supervisionar e coordenar a produção de bijuterias', 2300.00),
-    ('Gerente de Projetos', 'Gerenciar e coordenar projetos específicos', 2500.00),
-    ('Consultor de TI', 'Fornecer consultoria técnica e suporte de TI', 2200.00),
-    ('Líder de Equipe de Design', 'Liderar a equipe de designers de joias', 2400.00),
-    ('Coordenador de Segurança da Informação', 'Responsável pela segurança dos dados e informações', 2600.00),
-    ('Chefe de Atendimento ao Cliente', 'Supervisionar e coordenar a equipe de atendimento ao cliente', 1900.00),
-    ('Ourives', 'Fabricação e design de joias', 1800.00),  -- Cargo base que correspondente à profissão de Ourives
-    ('Designer de Joias', 'Design e criação de joias', 2000.00),  -- Cargo base que correspondente à profissão de Designer de Joias
-    ('Vendedor', 'Venda e assistência ao cliente', 800.00),  -- Cargo base que correspondente à profissão de Vendedor
-    ('Técnico de Gemologia', 'Análise e avaliação de gemas', 2200.00),  -- Cargo base que correspondente à profissão de Técnico de Gemologia
-    ('Programador Júnior', 'Desenvolvimento de software e aplicativos - Nível Júnior', 1500.00),  -- Cargo base que correspondente à profissão de Programador
-    ('Programador', 'Desenvolvimento de software e aplicativos - Nível Pleno', 2000.00),  -- Cargo base que correspondente à profissão de Programador
-    ('Programador Sênior', 'Desenvolvimento de software e aplicativos - Nível Sênior', 2500.00),  -- Cargo base que correspondente à profissão de Programador
-    ('Administrador de Redes', 'Gerenciamento e manutenção de redes', 2200.00);  -- Cargo base que correspondente à profissão de Administrador de Redes
+    ('CEO', 'Responsável pela gestão geral da empresa e decisões estratégicas', 4000.00),
+    ('Diretor Financeiro', 'Responsável pela gestão financeira da empresa', 3000.00),
+    ('Diretor de Marketing', 'Responsável pelas estratégias de marketing e promoção', 2500.00),
+    ('Gerente de Recursos Humanos', 'Responsável pela gestão do departamento de RH', 1500.00),
+    ('Gerente de TI', 'Responsável pela gestão da infraestrutura de TI', 2000.00),
+    ('Gerente de Operações', 'Responsável pela supervisão das operações diárias', 2200.00),
+    ('Gerente de Loja', 'Responsável pela gestão e operação de uma loja específica', 500.00),
+    ('Chefe de Armazém', 'Responsável pela supervisão do armazém e controle de estoque', 1000.00),
+    ('Supervisor de Vendas', 'Responsável pela supervisão da equipe de vendas', 800.00),
+    ('Assistente Executivo', 'Apoio administrativo aos executivos da empresa', 200.00),
+    ('Coordenador de Logística', 'Responsável pela coordenação das atividades logísticas', 1100.00),
+    ('Analista de Marketing', 'Análise e execução de campanhas de marketing', 500.00),
+    ('Especialista em SEO', 'Otimização do site e conteúdo para motores de busca', 700.00),
+    ('Coordenador de Vendas', 'Coordenar atividades e estratégias de vendas', 1000.00),
+    ('Chefe de Produção', 'Supervisionar e coordenar a produção de bijuterias', 1300.00),
+    ('Gerente de Projetos', 'Gerenciar e coordenar projetos específicos', 1500.00),
+    ('Consultor de TI', 'Fornecer consultoria técnica e suporte de TI', 1200.00),
+    ('Líder de Equipe de Design', 'Liderar a equipe de designers de joias', 1400.00),
+    ('Coordenador de Segurança da Informação', 'Responsável pela segurança dos dados e informações', 1600.00),
+    ('Chefe de Atendimento ao Cliente', 'Supervisionar e coordenar a equipe de atendimento ao cliente', 900.00),
+    ('Ourives', 'Fabricação e design de joias', 0.00),  -- Cargo base que correspondente à profissão de Ourives
+    ('Designer de Joias', 'Design e criação de joias', 0.00),  -- Cargo base que correspondente à profissão de Designer de Joias
+    ('Vendedor', 'Venda e assistência ao cliente', 0.00),  -- Cargo base que correspondente à profissão de Vendedor
+    ('Técnico de Gemologia', 'Análise e avaliação de gemas', 0.00),  -- Cargo base que correspondente à profissão de Técnico de Gemologia
+    ('Programador Júnior', 'Desenvolvimento de software e aplicativos - Nível Júnior', 0.00),  -- Cargo base que correspondente à profissão de Programador
+    ('Programador', 'Desenvolvimento de software e aplicativos - Nível Pleno', 1200.00),  -- Cargo base que correspondente à profissão de Programador
+    ('Programador Sênior', 'Desenvolvimento de software e aplicativos - Nível Sênior', 1800.00),  -- Cargo base que correspondente à profissão de Programador
+    ('Administrador de Redes', 'Gerenciamento e manutenção de redes', 0.00);  -- Cargo base que correspondente à profissão de Administrador de Redes
 
     
 INSERT INTO TAB_hierarquia (ID_cargo_atribuindo, ID_cargo_superior)

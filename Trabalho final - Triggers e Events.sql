@@ -169,8 +169,9 @@ DELIMITER ;
 
 
 
-
+/*
 -- Eventos
 SELECT * FROM information_schema.EVENTS WHERE EVENT_SCHEMA = 'DB_Bijuteria_Dona_Elvira';
 -- Triggers
 SELECT * FROM information_schema.TRIGGERS WHERE TRIGGER_SCHEMA = 'DB_Bijuteria_Dona_Elvira';
+*/
