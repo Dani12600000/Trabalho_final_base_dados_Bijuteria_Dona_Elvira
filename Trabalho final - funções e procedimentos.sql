@@ -508,3 +508,21 @@ END;
 //
 
 DELIMITER ;
+
+DELIMITER //
+
+-- DROP FUNCTION IF EXISTS obter_data_termino_contrato;
+
+CREATE FUNCTION obter_data_termino_contrato(des_no_singular VARCHAR(30), data_hora_contratado_avaliando DATETIME, prazo_contrato_obt INT)
+RETURNS DATE READS SQL DATA
+BEGIN
+    RETURN (CASE 
+				WHEN des_no_singular = 'ano' THEN DATE_ADD(data_hora_contratado_avaliando, INTERVAL prazo_contrato_obt YEAR)
+				WHEN des_no_singular = 'mês' THEN DATE_ADD(data_hora_contratado_avaliando, INTERVAL prazo_contrato_obt MONTH)
+				WHEN des_no_singular = 'semana' THEN DATE_ADD(data_hora_contratado_avaliando, INTERVAL prazo_contrato_obt WEEK)
+				WHEN des_no_singular = 'dia' THEN DATE_ADD(data_hora_contratado_avaliando, INTERVAL prazo_contrato_obt DAY)
+			END);
+END;
+//
+
+DELIMITER ;

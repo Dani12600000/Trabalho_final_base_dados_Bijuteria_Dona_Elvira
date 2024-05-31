@@ -30,30 +30,30 @@ VALUES
 -- ACABAR 
 INSERT INTO TAB_AUX_cargos_profissoes (ID_cargo, ID_profissao)
 VALUES
-	(2, ),
-    (3, ),
-    (4, ),
-    (5, ),
-    (6, ),
-    (7, ),
-    (8, ),
-    (9, ),
-    (10, ),
-    (11, ),
-    (12, ),
-    (13, ),
-    (14, ),
-    (15, ),
-    (16, ),
-    (17, ),
-    (18, ),
-    (19, ),
-    (20, ),
-    (21, ),
-    (22, ),
-    (23, ),
-    (24, ),
-    (25, ),
-    (26, ),
-    (27, ),
-    (28, );
+	(2, 4), -- Diretor Financeiro
+    (3, 1), -- Diretor de Marketing
+    (4, 6), -- Gerente de Recursos Humanos
+    (5, 9), -- Gerente de TI
+    (6, 5), -- Gerente de Operações
+    (7, 1), -- Gerente de Loja
+    (8, 5), -- Chefe de Armazém
+    (9, 1), -- Supervisor de Vendas
+    (10, 5), -- Assistente Executivo
+    (11, 5), -- Coordenador de Logística
+    (12, 4), -- Analista de Marketing
+    (13, 9), -- Especialista em SEO
+    (14, 4), -- Coordenador de Vendas
+    (15, 6), -- Chefe de Produção
+    (16, 6), -- Gerente de Projetos
+    (17, 9), -- Consultor de TI
+    (18, 2), -- Líder de Equipe de Design
+    (19, 9), -- Coordenador de Segurança da Informação
+    (20, 1), -- Chefe de Atendimento ao Cliente
+    (21, 3), -- Ourives
+    (22, 2), -- Designer de Joias
+    (23, 1), -- Vendedor
+    (24, 7), -- Técnico de Gemologia
+    (25, 8), -- Programador Júnior
+    (26, 8), -- Programador
+    (27, 8), -- Programador Sênior
+    (28, 10); -- Administrador de Redes

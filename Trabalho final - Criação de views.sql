@@ -44,7 +44,7 @@ SELECT hc.ID, hc.ID_cargo_atribuindo, ca.designacao AS des_cargo, hc.ID_cargo_su
 FROM HierarquiaCompleta hc
 INNER JOIN TAB_cargos ca ON hc.ID_cargo_atribuindo = ca.ID
 LEFT JOIN TAB_cargos cs ON hc.ID_cargo_superior = cs.ID
-ORDER BY hc.distancia ASC, hc.ID_cargo_superior ASC;            
+ORDER BY hc.distancia ASC, hc.ID_cargo_superior ASC;     
             
 -- DROP VIEW IF EXISTS VIEW_informacoes_funcionario;
 
@@ -57,27 +57,22 @@ SELECT f.ID AS ID_funcionario,
         TIMESTAMPDIFF(year,pe.data_nascimento, CURRENT_DATE()) AS idade,
         pe.NIF AS NIF,
         pr.designacao AS profissao,
-        
-        DATE_FORMAT(c.data_hora_contratado, "%d-%m-%Y   %H:%i") AS data_hora_ultimo_contrato,
-        CASE 
-			WHEN ut.no_singular = 'ano' THEN DATE_FORMAT(DATE_ADD(c.data_hora_contratado, INTERVAL c.prazo_contrato YEAR), "%d-%m-%Y")
-            WHEN ut.no_singular = 'mês' THEN DATE_FORMAT(DATE_ADD(c.data_hora_contratado, INTERVAL c.prazo_contrato MONTH), "%d-%m-%Y")
-            WHEN ut.no_singular = 'semana' THEN DATE_FORMAT(DATE_ADD(c.data_hora_contratado, INTERVAL c.prazo_contrato WEEK), "%d-%m-%Y")
-            WHEN ut.no_singular = 'dia' THEN DATE_FORMAT(DATE_ADD(c.data_hora_contratado, INTERVAL c.prazo_contrato DAY), "%d-%m-%Y")
-		END AS data_termino_contrato
+        vhoca.des_cargo,
+        -- DATE_FORMAT(c.data_hora_contratado, "%d-%m-%Y   %H:%i") AS data_hora_ultimo_contrato,
+        DATE_FORMAT(obter_data_termino_contrato(ut.no_singular, c.data_hora_contratado, c.prazo_contrato), "%d-%m-%Y") AS data_termino_contrato,
+        IF (obter_data_termino_contrato(ut.no_singular, c.data_hora_contratado, c.prazo_contrato) > CURRENT_DATE() AND (c.data_hora_cancelado IS NULL OR c.data_hora_cancelado > CURRENT_DATE()), DATEDIFF(obter_data_termino_contrato(ut.no_singular, c.data_hora_contratado, c.prazo_contrato), CURRENT_DATE()), "---") AS dias_para_acabar_contrato,
+        CASE
+			WHEN obter_data_termino_contrato(ut.no_singular, c.data_hora_contratado, c.prazo_contrato) > CURRENT_DATE() AND (c.data_hora_cancelado IS NULL OR c.data_hora_cancelado > CURRENT_DATE()) THEN "Trabalhando"
+            WHEN obter_data_termino_contrato(ut.no_singular, c.data_hora_contratado, c.prazo_contrato) <= CURRENT_DATE() AND (c.data_hora_cancelado IS NULL OR c.data_hora_cancelado > CURRENT_DATE()) THEN "Acabou o contrato"
+            WHEN (c.data_hora_cancelado IS NOT NULL OR c.data_hora_cancelado <= CURRENT_DATE()) THEN "Despedido"
+		END AS estado
 	FROM TAB_funcionario f
 			INNER JOIN TAB_pessoa pe ON f.ID_pessoa = pe.ID
             INNER JOIN TAB_profissao pr ON f.ID_profissao = pr.ID
-            -- Falta ligar a tabela promocoes_cargos que sera feita com uma view e com ela poderei ligar no inner join abaixo
-            -- INNER JOIN VIEW_hierarquia_ordenada_cargos_atual vhoca ON .ID = vhoca.ID_cargo_atribuindo
             INNER JOIN TAB_contrato c ON obter_contrato_mais_recente(f.ID) = c.ID
             INNER JOIN TAB_unidades_tempo ut ON c.ID_unidade_tempo_prazo_contrato = ut.ID
-            -- INNER JOIN TAB_experiencia exp ON f.ID = exp.ID
+            LEFT JOIN TAB_promocoes_cargos pc ON obter_promocao_mais_recente(f.ID) = pc.ID
+            LEFT JOIN VIEW_hierarquia_ordenada_cargos_atual vhoca ON pc.ID_cargo = vhoca.ID_cargo_atribuindo
+            -- LEFT JOIN TAB_experiencia exp ON f.ID = exp.ID
 	ORDER BY ID_funcionario
 ;
-
-
--- ACABAR 
-
-SELECT *
-	FROM TAB_

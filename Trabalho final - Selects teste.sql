@@ -176,6 +176,14 @@ SELECT *
 
 
 ;
+    
+SELECT *
+		FROM TAB_contrato;
 
 SELECT *
 	FROM TAB_promocoes_cargos;
+    
+SELECT *
+	FROM TAB_cargos;
+    
+SELECT obter_promocao_mais_recente(1);
