@@ -186,4 +186,8 @@ SELECT *
 SELECT *
 	FROM TAB_cargos;
     
+SELECT *
+	FROM TAB_profissao;
+    
 SELECT obter_promocao_mais_recente(1);
+
