@@ -467,7 +467,7 @@ BEGIN
     RETURN (SELECT c.ID
 		FROM TAB_contrato c
 				INNER JOIN TAB_unidades_tempo ut ON c.ID_unidade_tempo_prazo_contrato = ut.ID
-		WHERE c.ID_funcionario = ID_funcionario_proc AND (data_hora_cancelado IS NULL AND ID_funcionario_cancelou IS NULL)
+		WHERE c.ID_funcionario = ID_funcionario_proc AND (data_hora_cancelado IS NULL AND ID_funcionario_cancelou IS NULL) AND data_hora_contratado <= NOW()
 		ORDER BY data_hora_contratado DESC
         LIMIT 1);
 END;
@@ -484,9 +484,26 @@ RETURNS INT READS SQL DATA
 BEGIN
     RETURN (SELECT ID
 		FROM TAB_hierarquia
-		WHERE ID_cargo_atribuindo = ID_cargo_proc
+		WHERE ID_cargo_atribuindo = ID_cargo_proc AND data_hora <= CURRENT_DATE()
 		ORDER BY data_hora DESC
         LIMIT 1);
+END;
+//
+
+DELIMITER ;
+
+DELIMITER //
+
+-- DROP FUNCTION IF EXISTS obter_promocao_mais_recente;
+
+CREATE FUNCTION obter_promocao_mais_recente(ID_funcionario_proc INT)
+RETURNS INT READS SQL DATA
+BEGIN
+    RETURN (SELECT ID
+	FROM TAB_promocoes_cargos
+    WHERE ID_funcionario_promovido = ID_funcionario_proc AND data_promovido <= CURRENT_DATE()
+    ORDER BY data_promovido DESC
+    LIMIT 1);
 END;
 //
 
