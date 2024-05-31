@@ -191,3 +191,5 @@ SELECT *
     
 SELECT obter_promocao_mais_recente(1);
 
+SELECT *
+	FROM VIEW_informacoes_funcionario;

@@ -526,3 +526,37 @@ END;
 //
 
 DELIMITER ;
+
+
+DELIMITER //
+
+-- DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplasPromocoes;
+
+CREATE PROCEDURE ExecutarInsercaoRegistosMultiplasPromocoes(IN vezes INT)
+BEGIN
+	DECLARE ID_funcionario_atribuindo_cargo INT;
+    DECLARE ID_cargo_selecionado INT;
+    
+    SET contador = 1; 
+    
+    WHILE contador <= (SELECT MAX(ID) FROM TAB_funcionario) DO
+		SELECT ID INTO ID_funcionario_atribuindo_cargo FROM TAB_funcionario WHERE ID = contador;
+        
+        IF ID_funcionario_atribuindo_cargo IS NOT NULL THEN
+			SELECT acp.ID_cargo INTO ID_cargo_selecionado
+				FROM TAB_AUX_cargos_profissoes acp
+						INNER JOIN TAB_funcionario f ON acp.ID_profissao = f.ID_profissao
+				WHERE f.ID = 3
+				ORDER BY RAND()
+				LIMIT 1;
+			
+			INSERT INTO TAB_promocoes_cargos (ID_funcionario_promovido, ID_funcionario_promovedor, ID_cargo)
+			VALUE (ID_funcionario_atribuindo_cargo, 1, ID_cargo_selecionado)
+		END IF;
+        
+        SET contador = contador + 1;
+	END WHILE;
+	
+END;
+
+DELIMITER ;
