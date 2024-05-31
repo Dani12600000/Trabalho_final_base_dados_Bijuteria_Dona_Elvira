@@ -551,12 +551,15 @@ BEGIN
 				LIMIT 1;
 			
 			INSERT INTO TAB_promocoes_cargos (ID_funcionario_promovido, ID_funcionario_promovedor, ID_cargo)
-			VALUE (ID_funcionario_atribuindo_cargo, 1, ID_cargo_selecionado)
+			VALUE (
+				ID_funcionario_atribuindo_cargo, 
+				1, 
+                ID_cargo_selecionado
+			);
 		END IF;
         
         SET contador = contador + 1;
 	END WHILE;
-	
 END;
 
 DELIMITER ;

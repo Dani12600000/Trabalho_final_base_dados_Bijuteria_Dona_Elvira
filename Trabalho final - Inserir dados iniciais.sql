@@ -241,4 +241,4 @@ VALUES
     
 INSERT INTO TAB_promocoes_cargos (ID_funcionario_promovido, ID_cargo)
 VALUE
-	(1, 1)
+	(1, 1);
