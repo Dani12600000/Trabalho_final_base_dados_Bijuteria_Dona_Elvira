@@ -193,3 +193,16 @@ SELECT obter_promocao_mais_recente(1);
 
 SELECT *
 	FROM VIEW_informacoes_funcionario;
+    
+SELECT *
+	FROM TAB_hierarquia;
+
+SELECT obter_definicao_hierarquica_mais_recente(2);
+
+SELECT ID
+		FROM TAB_hierarquia
+		WHERE ID_cargo_atribuindo = 2 AND data_hora <= NOW()
+		ORDER BY data_hora DESC
+        LIMIT 1;
+
+UPDATE TAB_hierarquia SET data_hora = DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY) WHERE data_hora = CURRENT_DATE();

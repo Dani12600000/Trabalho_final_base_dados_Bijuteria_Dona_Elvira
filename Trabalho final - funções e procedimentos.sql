@@ -484,7 +484,7 @@ RETURNS INT READS SQL DATA
 BEGIN
     RETURN (SELECT ID
 		FROM TAB_hierarquia
-		WHERE ID_cargo_atribuindo = ID_cargo_proc AND data_hora <= CURRENT_DATE()
+		WHERE ID_cargo_atribuindo = ID_cargo_proc AND data_hora <= NOW()
 		ORDER BY data_hora DESC
         LIMIT 1);
 END;
@@ -532,21 +532,20 @@ DELIMITER //
 
 -- DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplasPromocoes;
 
-CREATE PROCEDURE ExecutarInsercaoRegistosMultiplasPromocoes(IN vezes INT)
+CREATE PROCEDURE ExecutarInsercaoRegistosMultiplasPromocoes()
 BEGIN
+	DECLARE contador INT DEFAULT 1;
 	DECLARE ID_funcionario_atribuindo_cargo INT;
     DECLARE ID_cargo_selecionado INT;
     
-    SET contador = 1; 
-    
     WHILE contador <= (SELECT MAX(ID) FROM TAB_funcionario) DO
-		SELECT ID INTO ID_funcionario_atribuindo_cargo FROM TAB_funcionario WHERE ID = contador;
+		SELECT ID INTO ID_funcionario_atribuindo_cargo FROM TAB_funcionario WHERE ID = contador AND ID_pessoa != 1;
         
         IF ID_funcionario_atribuindo_cargo IS NOT NULL THEN
 			SELECT acp.ID_cargo INTO ID_cargo_selecionado
 				FROM TAB_AUX_cargos_profissoes acp
 						INNER JOIN TAB_funcionario f ON acp.ID_profissao = f.ID_profissao
-				WHERE f.ID = 3
+				WHERE f.ID = ID_funcionario_atribuindo_cargo
 				ORDER BY RAND()
 				LIMIT 1;
 			
@@ -561,5 +560,6 @@ BEGIN
         SET contador = contador + 1;
 	END WHILE;
 END;
+//
 
 DELIMITER ;

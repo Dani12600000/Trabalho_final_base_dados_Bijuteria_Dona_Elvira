@@ -6,3 +6,4 @@ call ExecutarInsercaoRegistosMultiplosFuncionarios(50);
 call ExecutarInsercaoRegistosMultiplosCidadoes(10);
 call ExecutarInsercaoRegistosMultiplosEstrangeiros(10);
 call ExecutarInsercaoRegistosMultiplosContratosAtuaisFuncionarios();
+call ExecutarInsercaoRegistosMultiplasPromocoes(1);
