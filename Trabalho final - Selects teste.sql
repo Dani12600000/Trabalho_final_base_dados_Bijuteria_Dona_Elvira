@@ -205,4 +205,3 @@ SELECT ID
 		ORDER BY data_hora DESC
         LIMIT 1;
 
-UPDATE TAB_hierarquia SET data_hora = DATE_SUB(CURRENT_DATE(), INTERVAL 1 DAY) WHERE data_hora = CURRENT_DATE();

@@ -242,3 +242,34 @@ VALUES
 INSERT INTO TAB_promocoes_cargos (ID_funcionario_promovido, ID_cargo)
 VALUE
 	(1, 1);
+    
+INSERT INTO TAB_tamanho (designacao, ID_tipo_artigo, tamanho_min_cm, tamanho_max_cm)
+VALUES
+    ('Aneis Pequenos', 1, 1.0, 2.0),
+    ('Aneis Médios', 1, 2.1, 2.5),
+    ('Aneis Grandes', 1, 2.6, 3.0),
+    ('Pulseiras Pequenas', 2, 16.0, 18.0),
+    ('Pulseiras Médias', 2, 18.1, 20.0),
+    ('Pulseiras Grandes', 2, 20.1, 22.0),
+    ('Brincos Pequenos', 3, 0.5, 1.0),
+    ('Brincos Médios', 3, 1.1, 2.0),
+    ('Brincos Grandes', 3, 2.1, 3.0),
+    ('Colares Curtos', 4, 40.0, 45.0),
+    ('Colares Médios', 4, 45.1, 50.0),
+    ('Colares Longos', 4, 50.1, 60.0),
+    ('Tornozeleiras Pequenas', 5, 19.0, 21.0),
+    ('Tornozeleiras Médias', 5, 21.1, 23.0),
+    ('Tornozeleiras Grandes', 5, 23.1, 25.0),
+    ('Broches Pequenos', 6, 1.0, 2.0),
+    ('Broches Médios', 6, 2.1, 3.5),
+    ('Broches Grandes', 6, 3.6, 5.0),
+    ('Pingentes Pequenos', 7, 1.0, 2.0),
+    ('Pingentes Médios', 7, 2.1, 3.5),
+    ('Pingentes Grandes', 7, 3.6, 5.0),
+    ('Chokers Curtos', 8, 30.0, 35.0),
+    ('Chokers Médios', 8, 35.1, 40.0),
+    ('Chokers Longos', 8, 40.1, 45.0),
+    ('Alfinetes de Gravata Pequenos', 9, 1.0, 2.0),
+    ('Alfinetes de Gravata Médios', 9, 2.1, 3.5),
+    ('Alfinetes de Gravata Grandes', 9, 3.6, 5.0);
+
