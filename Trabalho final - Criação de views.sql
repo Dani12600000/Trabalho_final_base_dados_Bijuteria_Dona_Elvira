@@ -78,3 +78,24 @@ SELECT f.ID AS ID_funcionario,
             LEFT JOIN TAB_experiencia exp ON obter_experiencia_mais_recente(f.ID) = exp.ID
 	ORDER BY ID_funcionario
 ;
+
+/*
+CREATE VIEW VIEW_detalhes_artigos AS
+SELECT *
+	FROM TAB_artigos a 
+            INNER JOIN TAB_fornecedores f ON a.ID_fornecedor = f.ID
+            INNER JOIN TAB_tipos_artigos ta ON a.ID_tipo_artigo = ta.ID
+			INNER JOIN TAB_tamanho t ON ta.ID_tamanho = t.ID
+			
+;
+
+
+
+CREATE VIEW VIEW_instalacoes
+SELECT *
+	FROM TAB_instalacoes
+
+
+;
+
+*/

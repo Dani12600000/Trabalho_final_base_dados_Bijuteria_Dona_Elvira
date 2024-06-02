@@ -582,3 +582,51 @@ END;
 //
 
 DELIMITER ;
+
+DELIMITER //
+
+-- DROP FUNCTION IF EXISTS obter_artigos_em_stock;
+
+CREATE FUNCTION obter_artigos_em_stock(ID_artigo_proc INT, ID_instalacoes_proc INT)
+RETURNS INT READS SQL DATA
+BEGIN
+	DECLARE valor_artigo_compra DECIMAL(10,2);
+    
+	SELECT COUNT(*)
+		FROM TAB_artigos a INNER JOIN TAB_stock_artigo sa ON a.ID = sa.ID_artigo
+		WHERE sa.data_hora_chegada <= NOW() AND sa.ID_instalacoes_destino IF(ID_instalacoes_proc IS NULL, ANY, ID_instalacoes_proc) -- corrigir depois
+        
+    RETURN ;
+END;
+//
+
+DELIMITER ;
+
+
+DELIMITER //
+
+-- DROP FUNCTION IF EXISTS obter_valor_artigos_venda_media;
+
+CREATE FUNCTION obter_valor_artigos_venda_media(ID_artigo_proc INT)
+RETURNS DECIMAL(10,2) READS SQL DATA
+BEGIN
+	DECLARE valor_artigo_compra DECIMAL(10,2);
+    
+	SELECT COUNT(*)
+		FROM TAB_stock_artigo sa
+				INNER JOIN TAB_metodo_pagamento mp ON sa.ID_metodo_pagamento = mp.ID
+		WHERE ID_artigo = ID_artigo_proc AND data_hora_chegada <= NOW()
+        ;
+    
+    SELECT ID
+		FROM TAB_stock_artigo sa
+				INNER JOIN TAB_metodo_pagamento mp ON sa.ID_metodo_pagamento = mp.ID
+		WHERE ID_artigo = ID_artigo_proc AND data_hora_chegada <= NOW()
+		ORDER BY data_hora DESC
+		LIMIT 1;
+
+    RETURN ;
+END;
+//
+
+DELIMITER ;
