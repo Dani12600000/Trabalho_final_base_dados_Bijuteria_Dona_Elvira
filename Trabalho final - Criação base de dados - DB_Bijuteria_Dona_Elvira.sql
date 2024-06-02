@@ -287,7 +287,7 @@ CREATE TABLE TAB_promocao_desconto_monetario_geral (
 	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     ID_promocao INT NOT NULL,
     valor DECIMAL(10,2),
-    percentagem DECIMAL(3,2),
+    percentagem DECIMAL(5,2),
     FOREIGN KEY (ID_promocao) REFERENCES TAB_promocao(ID),
     CONSTRAINT chk_valor_percentagem_sao_null CHECK (valor IS NOT NULL OR percentagem IS NOT NULL)
 );
@@ -295,7 +295,7 @@ CREATE TABLE TAB_promocao_desconto_monetario_geral (
 CREATE TABLE TAB_metodo_pagamento (
 	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     designacao NVARCHAR(255) NOT NULL,
-    comissao_percentagem DECIMAL(3,2),
+    comissao_percentagem DECIMAL(5,2),
     comissao_valor DECIMAL(10,2),
     CONSTRAINT chk_comissao_percentagem_valor_sao_null CHECK (comissao_percentagem IS NOT NULL OR comissao_valor IS NOT NULL)
 );
@@ -360,7 +360,7 @@ CREATE TABLE TAB_promocao_artigo (
     ID_artigo INT NOT NULL,
     acao VARCHAR(20) CHECK (acao IN ('compra', 'desconto')),
     quantidade INT NOT NULL DEFAULT (1),
-    desconto DECIMAL(3,2),
+    desconto DECIMAL(5,2),
     FOREIGN KEY (ID_promocao) REFERENCES TAB_promocao(ID),
     FOREIGN KEY (ID_artigo) REFERENCES TAB_artigos(ID),
     CONSTRAINT chk_acao_desconto_tipo_artigo CHECK (acao = 'desconto' AND desconto IS NOT NULL OR acao = 'compra' AND desconto IS NULL)
@@ -402,17 +402,9 @@ CREATE TABLE TAB_stock_artigo (
 CREATE TABLE TAB_percentagem_lucro_artigo (
 	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     ID_artigo INT NOT NULL,
-    percentagem_lucro DECIMAL(3,2) NOT NULL DEFAULT (15),
+    percentagem_lucro DECIMAL(5,2) NOT NULL DEFAULT (15),
     data_hora_mudado DATETIME NOT NULL DEFAULT (NOW()),
     data_hora_aplicado DATETIME NOT NULL DEFAULT (DATE_ADD(NOW(), INTERVAL 4 DAY))
-);
-
-CREATE TABLE TAB_requesicao_artigo (
-	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-	ID_artigo INT NOT NULL,
-    data_hora_requesicao DATETIME NOT NULL DEFAULT (NOW()),
-    quantidade INT NOT NULL DEFAULT (1),
-    FOREIGN KEY (ID_artigo) REFERENCES TAB_artigos(ID)
 );
 
 CREATE TABLE TAB_transferencias (

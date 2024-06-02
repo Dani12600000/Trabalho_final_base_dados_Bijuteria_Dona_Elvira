@@ -27,7 +27,6 @@ VALUES
     ('Liliana', 'de', 'Oliveira', 'Pratas'),
     ('Francisco', 'Rafael', 'Santos', 'Casado');
     
--- ACABAR 
 INSERT INTO TAB_AUX_cargos_profissoes (ID_cargo, ID_profissao)
 VALUES
 	(2, 4), -- Diretor Financeiro

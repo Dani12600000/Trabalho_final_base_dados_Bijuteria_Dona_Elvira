@@ -272,4 +272,56 @@ VALUES
     ('Alfinetes de Gravata Pequenos', 9, 1.0, 2.0),
     ('Alfinetes de Gravata Médios', 9, 2.1, 3.5),
     ('Alfinetes de Gravata Grandes', 9, 3.6, 5.0);
+    
+INSERT INTO TAB_fornecedores (nome_empresa, NIF_empresa)
+VALUES
+    ('Fornecedor A', '123456789'),
+    ('Fornecedor B', '987654321'),
+    ('Fornecedor C', '112233445'),
+    ('Fornecedor D', '556677889'),
+    ('Fornecedor E', '998877665');
 
+INSERT INTO TAB_artigos (ID_fornecedor, ID_tipo_artigo, descricao)
+VALUES
+    (1, 1, 'Anel de ouro 18k com diamantes'),
+    (1, 2, 'Pulseira de prata esterlina'),
+    (2, 3, 'Brinco de pérola natural'),
+    (2, 4, 'Colar de ouro branco com safira'),
+    (3, 5, 'Tornozeleira de couro trançado'),
+    (3, 6, 'Broche vintage com pedras preciosas'),
+    (4, 7, 'Pingente de jade esculpido'),
+    (4, 8, 'Choker de renda preta com cristal'),
+    (5, 9, 'Alfinete de gravata com design minimalista'),
+    (5, 1, 'Anel de prata com esmeralda'),
+    (1, 2, 'Pulseira de ouro rosé com rubis'),
+    (2, 3, 'Brinco de prata com topázio azul');
+    
+INSERT INTO TAB_tamanho_artigo (ID_tamanho, ID_artigo)
+VALUES
+    (2, 1),  -- Aneis Médios para o Anel de ouro 18k com diamantes
+    (5, 2),  -- Pulseiras Médias para a Pulseira de prata esterlina
+    (8, 3),  -- Brincos Médios para o Brinco de pérola natural
+    (11, 4), -- Colares Médios para o Colar de ouro branco com safira
+    (14, 5), -- Tornozeleiras Médias para a Tornozeleira de couro trançado
+    (17, 6), -- Broches Médios para o Broche vintage com pedras preciosas
+    (20, 7), -- Pingentes Médios para o Pingente de jade esculpido
+    (23, 8), -- Chokers Médios para o Choker de renda preta com cristal
+    (26, 9), -- Alfinetes de Gravata Médios para o Alfinete de gravata com design minimalista
+    (2, 10), -- Aneis Médios para o Anel de prata com esmeralda
+    (5, 11), -- Pulseiras Médias para a Pulseira de ouro rosé com rubis
+    (8, 12); -- Brincos Médios para o Brinco de prata com topázio azul
+
+INSERT INTO TAB_percentagem_lucro_artigo (ID_artigo, percentagem_lucro)
+VALUES
+	(1, 20.00),
+    (2, 18.50),
+    (3, 22.00),
+    (4, 25.00),
+    (5, 19.75),
+    (6, 21.50),
+    (7, 23.00),
+    (8, 20.50),
+    (9, 18.00),
+    (10, 19.00),
+    (11, 20.00),
+    (12, 21.00);
