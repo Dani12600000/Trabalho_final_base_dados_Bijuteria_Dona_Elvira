@@ -243,6 +243,10 @@ INSERT INTO TAB_promocoes_cargos (ID_funcionario_promovido, ID_cargo)
 VALUE
 	(1, 1);
     
+INSERT INTO TAB_experiencia (ID_funcionario, n_anos, salario_extra_experiencia)
+VALUE
+	(1, 1, 100);
+    
 INSERT INTO TAB_tamanho (designacao, ID_tipo_artigo, tamanho_min_cm, tamanho_max_cm)
 VALUES
     ('Aneis Pequenos', 1, 1.0, 2.0),

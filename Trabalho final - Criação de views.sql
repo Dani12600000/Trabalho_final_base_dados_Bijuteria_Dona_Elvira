@@ -59,20 +59,22 @@ SELECT f.ID AS ID_funcionario,
         pr.designacao AS profissao,
         vhoca.des_cargo,
         -- DATE_FORMAT(c.data_hora_contratado, "%d-%m-%Y   %H:%i") AS data_hora_ultimo_contrato,
-        DATE_FORMAT(obter_data_termino_contrato(ut.no_singular, c.data_hora_contratado, c.prazo_contrato), "%d-%m-%Y") AS data_termino_contrato,
-        IF (obter_data_termino_contrato(ut.no_singular, c.data_hora_contratado, c.prazo_contrato) > CURRENT_DATE() AND (c.data_hora_cancelado IS NULL OR c.data_hora_cancelado > CURRENT_DATE()), DATEDIFF(obter_data_termino_contrato(ut.no_singular, c.data_hora_contratado, c.prazo_contrato), CURRENT_DATE()), "---") AS dias_para_acabar_contrato,
+        DATE_FORMAT(obter_data_termino_contrato(ut.no_singular, co.data_hora_contratado, co.prazo_contrato), "%d-%m-%Y") AS data_termino_contrato,
+        IF (obter_data_termino_contrato(ut.no_singular, co.data_hora_contratado, co.prazo_contrato) > CURRENT_DATE() AND (co.data_hora_cancelado IS NULL OR co.data_hora_cancelado > CURRENT_DATE()), DATEDIFF(obter_data_termino_contrato(ut.no_singular, co.data_hora_contratado, co.prazo_contrato), CURRENT_DATE()), "---") AS dias_para_acabar_contrato,
         CASE
-			WHEN obter_data_termino_contrato(ut.no_singular, c.data_hora_contratado, c.prazo_contrato) > CURRENT_DATE() AND (c.data_hora_cancelado IS NULL OR c.data_hora_cancelado > CURRENT_DATE()) THEN "Trabalhando"
-            WHEN obter_data_termino_contrato(ut.no_singular, c.data_hora_contratado, c.prazo_contrato) <= CURRENT_DATE() AND (c.data_hora_cancelado IS NULL OR c.data_hora_cancelado > CURRENT_DATE()) THEN "Acabou o contrato"
-            WHEN (c.data_hora_cancelado IS NOT NULL OR c.data_hora_cancelado <= CURRENT_DATE()) THEN "Despedido"
-		END AS estado
+			WHEN obter_data_termino_contrato(ut.no_singular, co.data_hora_contratado, co.prazo_contrato) > CURRENT_DATE() AND (co.data_hora_cancelado IS NULL OR co.data_hora_cancelado > CURRENT_DATE()) THEN "Trabalhando"
+            WHEN obter_data_termino_contrato(ut.no_singular, co.data_hora_contratado, co.prazo_contrato) <= CURRENT_DATE() AND (co.data_hora_cancelado IS NULL OR co.data_hora_cancelado > CURRENT_DATE()) THEN "Acabou o contrato"
+            WHEN (co.data_hora_cancelado IS NOT NULL OR co.data_hora_cancelado <= CURRENT_DATE()) THEN "Despedido"
+		END AS estado,
+        COALESCE(ca.salario_extra_cargo, 0) + COALESCE(pr.salario_base, 0) + COALESCE(exp.salario_extra_experiencia, 0) AS total_salario
 	FROM TAB_funcionario f
 			INNER JOIN TAB_pessoa pe ON f.ID_pessoa = pe.ID
             INNER JOIN TAB_profissao pr ON f.ID_profissao = pr.ID
-            INNER JOIN TAB_contrato c ON obter_contrato_mais_recente(f.ID) = c.ID
-            INNER JOIN TAB_unidades_tempo ut ON c.ID_unidade_tempo_prazo_contrato = ut.ID
+            INNER JOIN TAB_contrato co ON obter_contrato_mais_recente(f.ID) = co.ID
+            INNER JOIN TAB_unidades_tempo ut ON co.ID_unidade_tempo_prazo_contrato = ut.ID
             LEFT JOIN TAB_promocoes_cargos pc ON obter_promocao_mais_recente(f.ID) = pc.ID
+            LEFT JOIN TAB_cargos ca ON pc.ID_cargo = ca.ID
             LEFT JOIN VIEW_hierarquia_ordenada_cargos_atual vhoca ON pc.ID_cargo = vhoca.ID_cargo_atribuindo
-            -- LEFT JOIN TAB_experiencia exp ON f.ID = exp.ID
+            LEFT JOIN TAB_experiencia exp ON obter_experiencia_mais_recente(f.ID) = exp.ID
 	ORDER BY ID_funcionario
 ;

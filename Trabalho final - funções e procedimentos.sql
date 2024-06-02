@@ -563,3 +563,22 @@ END;
 //
 
 DELIMITER ;
+
+
+
+DELIMITER //
+
+-- DROP FUNCTION IF EXISTS obter_experiencia_mais_recente;
+
+CREATE FUNCTION obter_experiencia_mais_recente(ID_funcionario_proc INT)
+RETURNS INT READS SQL DATA
+BEGIN
+    RETURN (SELECT ID
+	FROM TAB_experiencia
+    WHERE ID_funcionario = ID_funcionario_proc AND data_hora <= NOW()
+    ORDER BY data_hora DESC
+    LIMIT 1);
+END;
+//
+
+DELIMITER ;

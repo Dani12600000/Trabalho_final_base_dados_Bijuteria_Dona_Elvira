@@ -118,6 +118,7 @@ CREATE TABLE TAB_experiencia (
 	ID_funcionario INT NOT NULL,
     n_anos INT NOT NULL DEFAULT (1),
     salario_extra_experiencia DECIMAL(10,2) NOT NULL,
+    data_hora DATETIME NOT NULL DEFAULT (NOW()),
     FOREIGN KEY (ID_funcionario) REFERENCES TAB_funcionario(ID)
 );
 
