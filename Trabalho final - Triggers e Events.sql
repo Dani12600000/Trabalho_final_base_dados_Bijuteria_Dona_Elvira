@@ -167,6 +167,58 @@ END;
 DELIMITER ;
 
 
+DELIMITER //
+
+-- DROP TRIGGER trg_stock_artigo_before_insert;
+
+CREATE TRIGGER trg_stock_artigo_before_insert
+BEFORE INSERT ON TAB_stock_artigo
+FOR EACH ROW
+BEGIN
+    -- Se data_hora_chegada não for NULL, data_hora_envio também não pode ser NULL
+    IF NEW.data_hora_chegada IS NOT NULL AND NEW.data_hora_envio IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'data_hora_envio não pode ser NULL quando data_hora_chegada não é NULL';
+    END IF;
+
+    -- Se data_hora_envio for NULL, ID_metodo_pagamento deve ser NULL e valor_total pode ser NULL
+    IF NEW.data_hora_envio IS NOT NULL AND (NEW.ID_metodo_pagamento IS NULL OR NEW.valor_total IS NULL) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ID_metodo_pagamento e/ou valor_total deve ter valores quando data_hora_envio não é NULL';
+    END IF;
+
+    -- Se metodo_pagamento não for NULL e valor_total é null ou vice versa
+    IF (NEW.ID_metodo_pagamento IS NOT NULL AND NEW.valor_total IS NULL) OR (NEW.ID_metodo_pagamento IS NULL AND NEW.valor_total IS NOT NULL) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'valor_total ou metodo_pagamento não pode ser NULL quando o valor_total ou metodo_pagamento não é NULL';
+    END IF;
+END //
+
+DELIMITER ;
+
+DELIMITER //
+
+-- DROP TRIGGER trg_stock_artigo_before_update;
+
+CREATE TRIGGER trg_stock_artigo_before_update
+BEFORE UPDATE ON TAB_stock_artigo
+FOR EACH ROW
+BEGIN
+    -- Se data_hora_chegada não for NULL, data_hora_envio também não pode ser NULL
+    IF NEW.data_hora_chegada IS NOT NULL AND NEW.data_hora_envio IS NULL THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'data_hora_envio não pode ser NULL quando data_hora_chegada não é NULL';
+    END IF;
+
+    -- Se data_hora_envio for NULL, ID_metodo_pagamento deve ser NULL e valor_total pode ser NULL
+    IF NEW.data_hora_envio IS NOT NULL AND (NEW.ID_metodo_pagamento IS NULL OR NEW.valor_total IS NULL) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'ID_metodo_pagamento e/ou valor_total deve ter valores quando data_hora_envio não é NULL';
+    END IF;
+
+    -- Se metodo_pagamento não for NULL e valor_total é null ou vice versa
+    IF (NEW.ID_metodo_pagamento IS NOT NULL AND NEW.valor_total IS NULL) OR (NEW.ID_metodo_pagamento IS NULL AND NEW.valor_total IS NOT NULL) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'valor_total ou metodo_pagamento não pode ser NULL quando o valor_total ou metodo_pagamento não é NULL';
+    END IF;
+END //
+
+DELIMITER ;
+
 
 
 /*

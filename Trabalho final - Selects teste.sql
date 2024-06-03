@@ -163,7 +163,7 @@ SELECT *
 	FROM TAB_unidades_tempo;
 
 SELECT *
-	FROM VIEW_hierarquia_ordenada_cargos;
+	FROM VIEW_hierarquia_ordenada_cargos_atual;
     
 
 SELECT obter_contrato_mais_recente(4);
@@ -192,6 +192,11 @@ SELECT *
 SELECT obter_promocao_mais_recente(1);
 
 SELECT *
+	FROM TAB_contrato;
+
+UPDATE TAB_contrato SET prazo_contrato = 20 WHERE ID = 1; 
+
+SELECT *
 	FROM VIEW_informacoes_funcionario;
     
 SELECT *
@@ -205,3 +210,26 @@ SELECT ID
 		ORDER BY data_hora DESC
         LIMIT 1;
 
+
+
+SELECT COUNT(*)
+		FROM TAB_artigos a 
+		INNER JOIN TAB_stock_artigo sa ON a.ID = sa.ID_artigo
+		WHERE sa.data_hora_chegada <= NOW() AND a.ID = 1 -- AND (@ID_instalacoes_proc IS NULL OR sa.ID_instalacoes_destino = @ID_instalacoes_proc)
+
+;
+
+UPDATE TAB_stock_artigo SET data_hora_chegada = NOW() WHERE data_hora_chegada IS NULL AND data_hora_envio IS NOT NULL;
+
+SELECT *
+	FROM TAB_stock_artigo;
+
+
+SELECT v.*
+	FROM TAB_artigos a
+			INNER JOIN TAB_venda v ON a.ID = v.ID_artigo;
+            
+SELECT *
+	FROM TAB_venda;
+    
+SELECT obter_artigos_em_stock(1, NULL);

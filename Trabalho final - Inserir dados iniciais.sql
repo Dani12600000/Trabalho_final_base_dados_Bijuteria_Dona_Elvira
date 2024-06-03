@@ -329,3 +329,19 @@ VALUES
     (10, 19.00),
     (11, 20.00),
     (12, 21.00);
+    
+INSERT INTO TAB_stock_artigo (ID_artigo, quantidade, ID_instalacoes_destino, data_hora_envio, ID_metodo_pagamento, valor_total, data_hora_chegada)
+VALUE
+	(1, 10, 4, '2024-06-02 20:40', 3, 100.00, '2024-06-03 10:00:00');
+    
+INSERT INTO TAB_venda (ID_artigo, ID_metodo_pagamento, ID_cliente, ID_funcionario, compra_online, ID_instalacoes_compra_recolha)
+VALUE
+	(
+		1,
+		(SELECT ID FROM TAB_metodo_pagamento ORDER BY RAND() LIMIT 1),
+        (SELECT ID FROM TAB_cliente ORDER BY RAND() LIMIT 1),
+        (SELECT ID FROM TAB_funcionario ORDER BY RAND() LIMIT 1),
+        FALSE,
+        (SELECT ID FROM TAB_instalacoes WHERE designacao LIKE "%loja%" ORDER BY RAND() LIMIT 1)
+	);
+    

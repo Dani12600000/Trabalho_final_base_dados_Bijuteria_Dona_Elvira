@@ -583,20 +583,85 @@ END;
 
 DELIMITER ;
 
+
 DELIMITER //
 
--- DROP FUNCTION IF EXISTS obter_artigos_em_stock;
+-- DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplasAbastecimentosStock;
+
+CREATE PROCEDURE ExecutarInsercaoRegistosMultiplasAbastecimentosStock(max_iterations INT)
+BEGIN
+    DECLARE i INT DEFAULT 0;
+    DECLARE random_ID_artigo INT;
+	DECLARE random_quantidade INT;
+	DECLARE random_ID_instalacoes_destino INT;
+	DECLARE random_ID_metodo_pagamento INT;
+	DECLARE random_valor_total DECIMAL(10, 2);
+	DECLARE random_data_hora_envio DATETIME;
+	DECLARE random_data_hora_chegada DATETIME;
+    IF max_iterations IS NULL THEN SET max_iterations = 10; END IF;
+    
+    WHILE i < max_iterations DO
+        SET random_ID_artigo = FLOOR(1 + (RAND() * (SELECT MAX(ID) FROM TAB_artigos)));
+        SET random_quantidade = FLOOR(1 + (RAND() * 10));
+        SET random_ID_instalacoes_destino = FLOOR(1 + (RAND() * (SELECT MAX(ID) FROM TAB_instalacoes)));
+        SET random_ID_metodo_pagamento = FLOOR(1 + (RAND() * (SELECT MAX(ID) FROM TAB_metodo_pagamento)));
+        SET random_valor_total = ROUND(RAND() * 1000, 2);
+        SET random_data_hora_envio = NOW();
+        SET random_data_hora_chegada = DATE_ADD(NOW(), INTERVAL FLOOR(1 + (RAND() * 10)) DAY);
+
+        -- Inserir o registro na tabela TAB_stock_artigo
+        INSERT INTO TAB_stock_artigo (ID_artigo, quantidade, data_hora_envio, data_hora_chegada, ID_instalacoes_destino, ID_metodo_pagamento, valor_total)
+        VALUES (random_ID_artigo, random_quantidade, random_data_hora_envio, random_data_hora_chegada, random_ID_instalacoes_destino, random_ID_metodo_pagamento, random_valor_total);
+
+        -- Incrementar o contador
+        SET i = i + 1;
+    END WHILE;
+END 
+//
+
+DELIMITER ;
+
+DELIMITER //
+
+DROP FUNCTION IF EXISTS obter_artigos_em_stock;
 
 CREATE FUNCTION obter_artigos_em_stock(ID_artigo_proc INT, ID_instalacoes_proc INT)
 RETURNS INT READS SQL DATA
 BEGIN
-	DECLARE valor_artigo_compra DECIMAL(10,2);
+    DECLARE n_artigos_compra INT;
+    DECLARE n_artigos_comprados INT DEFAULT 0;
+    DECLARE n_artigos_vendidos INT DEFAULT 0;
+    DECLARE n_artigos_transferidos INT DEFAULT 0;
     
-	SELECT COUNT(*)
-		FROM TAB_artigos a INNER JOIN TAB_stock_artigo sa ON a.ID = sa.ID_artigo
-		WHERE sa.data_hora_chegada <= NOW() AND sa.ID_instalacoes_destino IF(ID_instalacoes_proc IS NULL, ANY, ID_instalacoes_proc) -- corrigir depois
+    IF ID_instalacoes_proc IS NULL THEN
+		SELECT SUM(quantidade) INTO n_artigos_comprados
+			FROM TAB_artigos a 
+					INNER JOIN TAB_stock_artigo sa ON a.ID = sa.ID_artigo
+			WHERE sa.data_hora_chegada <= NOW() AND a.ID = ID_artigo_proc;
+            
+		SELECT COUNT(*) INTO n_artigos_vendidos
+			FROM TAB_artigos a
+					INNER JOIN TAB_venda v ON a.ID = v.ID_artigo
+			WHERE v.data_hora_pedido <= NOW() AND a.ID = ID_artigo_proc;
         
-    RETURN ;
+	ELSE
+		SELECT SUM(quantidade) INTO n_artigos_comprados
+			FROM TAB_artigos a 
+			INNER JOIN TAB_stock_artigo sa ON a.ID = sa.ID_artigo
+			WHERE sa.data_hora_chegada <= NOW() AND a.ID = ID_artigo_proc AND sa.ID_instalacoes_destino = ID_instalacoes_proc;
+		
+        SELECT COUNT(*) INTO n_artigos_vendidos
+			FROM TAB_artigos a
+					INNER JOIN TAB_venda v ON a.ID = v.ID_artigo
+			WHERE v.data_hora_pedido <= NOW() AND a.ID = ID_artigo_proc AND v.ID_instalacoes_compra_recolha = ID_instalacoes_proc;
+		
+	END IF;
+    
+    IF n_artigos_comprados IS NULL THEN SET n_artigos_comprados = 0; END IF;
+    
+	SET n_artigos_compra = n_artigos_comprados - n_artigos_vendidos - n_artigos_transferidos;
+    
+    RETURN n_artigos_compra;
 END;
 //
 

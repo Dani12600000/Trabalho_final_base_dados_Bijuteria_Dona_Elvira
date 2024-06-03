@@ -84,8 +84,9 @@ CREATE VIEW VIEW_detalhes_artigos AS
 SELECT *
 	FROM TAB_artigos a 
             INNER JOIN TAB_fornecedores f ON a.ID_fornecedor = f.ID
-            INNER JOIN TAB_tipos_artigos ta ON a.ID_tipo_artigo = ta.ID
-			INNER JOIN TAB_tamanho t ON ta.ID_tamanho = t.ID
+            INNER JOIN TAB_tipos_artigos tia ON a.ID_tipo_artigo = tia.ID
+            INNER JOIN TAB_tamanho_artigo taa ON a.ID = taa.ID_artigo
+			INNER JOIN TAB_tamanho t ON taa.ID_tamanho = t.ID
 			
 ;
 
