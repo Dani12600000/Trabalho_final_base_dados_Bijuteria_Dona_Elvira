@@ -164,10 +164,34 @@ VALUES
     ('14:00:00', '17:00:00'),
     ('14:00:00', '17:30:00'),
 	('15:00:00', '18:00:00');
+    
+INSERT INTO TAB_dia_semana (designacao, n_horas_trabalho_esperado)
+VALUES
+	('Domingo', 4),
+    ('Segunda-Feira', 9),
+    ('Terça-Feira', 9),
+    ('Quarta-Feira', 9),
+    ('Quinta-Feira', 9),
+    ('Sexta-Feira', 8),
+    ('Sábado', 0);
 
 INSERT INTO TAB_horario (data_entrada_vigor, ID_feriado, ID_instalacoes)
 VALUES
 	(DATE_ADD(CURDATE(), INTERVAL 7 DAY), NULL, 1);
+    
+INSERT INTO TAB_horas_semana (ID_dia_semana, ID_horas, ID_horario)
+VALUES
+	(1, 7, 1),
+    (2, 1, 1),
+    (2, 4, 1),
+    (3, 1, 1),
+    (3, 4, 1),
+    (4, 1, 1),
+    (4, 4, 1),
+    (5, 1, 1),
+    (5, 4, 1),
+    (6, 1, 1),
+    (6, 5, 1);
     
     
 INSERT INTO TAB_pessoa (nome, sobrenome, nif, data_nascimento)

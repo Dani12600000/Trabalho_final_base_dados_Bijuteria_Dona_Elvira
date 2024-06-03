@@ -22,3 +22,20 @@ WHERE (SELECT SUM(quantidade)
 ORDER BY data_hora DESC;
 
 DROP TABLE pontos;
+
+
+
+SELECT 
+    *
+FROM 
+    TAB_stock_artigo sa
+INNER JOIN 
+    TAB_metodo_pagamento mp ON sa.ID_metodo_pagamento = mp.ID
+WHERE 
+    sa.ID_artigo = 1 AND 
+    sa.data_hora_chegada <= NOW() AND
+    (SELECT SUM(quantidade) 
+     FROM TAB_stock_artigo AS sa2 
+     WHERE sa2.data_hora_chegada <= sa.data_hora_chegada AND sa2.ID_artigo = 1) <= 10
+ORDER BY 
+    sa.data_hora_chegada DESC;

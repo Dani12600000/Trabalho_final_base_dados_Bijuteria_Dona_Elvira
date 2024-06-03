@@ -79,24 +79,54 @@ SELECT f.ID AS ID_funcionario,
 	ORDER BY ID_funcionario
 ;
 
-/*
+
 CREATE VIEW VIEW_detalhes_artigos AS
-SELECT *
+SELECT a.ID, a.descricao AS descricao_artigo, tia.designacao AS des_tipo_artigo, t.designacao AS tamanho, t.tamanho_min_cm, t.tamanho_max_cm, f.nome_empresa AS nome_fornecedor, f.NIF_empresa AS NIF_fornecedor, obter_artigos_em_stock(a.ID, NULL) AS artigos_em_stock, ROUND(obter_valor_artigos_compra_media(a.ID) + obter_valor_artigos_compra_media(a.ID) * obter_percentagem_lucro_artigo_atual(a.ID) / 100, 2) AS preco
 	FROM TAB_artigos a 
             INNER JOIN TAB_fornecedores f ON a.ID_fornecedor = f.ID
             INNER JOIN TAB_tipos_artigos tia ON a.ID_tipo_artigo = tia.ID
             INNER JOIN TAB_tamanho_artigo taa ON a.ID = taa.ID_artigo
 			INNER JOIN TAB_tamanho t ON taa.ID_tamanho = t.ID
 			
+	ORDER BY a.ID
 ;
 
 
-
-CREATE VIEW VIEW_instalacoes
-SELECT *
-	FROM TAB_instalacoes
-
+CREATE VIEW VIEW_horario_atual AS 
+SELECT ho.ID_instalacoes, 
+		IF(f.ID IS NULL, '---', f.ID) AS ID_feriado, 
+        IF(f.ID IS NULL, '---', f.designacao) AS feriado_aplicada, 
+        ds.ID AS ID_dia_semana, 
+        ds.designacao AS dia_semana, 
+        h.hora_aberto, 
+        h.hora_fechado, 
+        ds.n_horas_trabalho_esperado AS horas_trabalho_esperado,
+        ho.data_entrada_vigor
+	FROM TAB_horario ho
+			INNER JOIN TAB_horas_semana hs ON ho.ID = hs.ID_horario
+            INNER JOIN TAB_horas h ON hs.ID_horas = h.ID
+            INNER JOIN TAB_dia_semana ds ON hs.ID_dia_semana = ds.ID
+            LEFT JOIN TAB_feriado f ON ho.ID_feriado = f.ID
+	WHERE obter_data_horario_mais_recente(ho.ID, ho.ID_feriado) = ho.data_entrada_vigor
 
 ;
 
-*/
+CREATE VIEW VIEW_instalacoes AS
+SELECT i.ID, 
+		i.designacao, 
+        ti.designacao AS des_tipo_instalacoes, 
+        i.morada, 
+        i.localizacao_gps, 
+        data_hora_primeira_abertura, 
+        data_hora_ultimo_encerramento, 
+        CASE 
+			WHEN data_hora_primeira_abertura IS NULL THEN "Sem planos para abrir"
+			WHEN data_hora_primeira_abertura > NOW() THEN "Por abrir"
+            WHEN data_hora_primeira_abertura <= NOW() AND data_hora_ultimo_encerramento IS NULL THEN "Em funcionamento"
+            WHEN data_hora_primeira_abertura <= NOW() AND data_hora_ultimo_encerramento > NOW() THEN "Irá ser fechado"
+            WHEN data_hora_primeira_abertura <= NOW() AND data_hora_ultimo_encerramento <= NOW() THEN "Encerrado"
+		END AS estado
+	FROM TAB_instalacoes i
+			INNER JOIN TAB_tipo_instalacoes ti ON i.ID_tipo_instalacoes = ti.ID
+		
+;

@@ -271,5 +271,32 @@ SELECT *
 	FROM TAB_percentagem_lucro_artigo;
     
 -- UPDATE TAB_percentagem_lucro_artigo SET data_hora_aplicado = NOW() WHERE ID = 1;
+-- UPDATE TAB_stock_artigo SET data_hora_chegada = NOW() WHERE ID = 2;
 
-SELECT obter_valor_artigos_venda_media(1);
+
+SELECT obter_artigos_em_stock(1, NULL);
+
+SELECT obter_valor_artigos_compra_media(1);
+
+SELECT obter_valor_artigos_compra_media(10);
+
+SELECT obter_percentagem_lucro_artigo_atual(10);
+
+SELECT *
+	FROM TAB_stock_artigo
+    WHERE ID_artigo = 1;
+    
+SELECT *
+	FROM TAB_percentagem_lucro_artigo;
+
+SELECT obter_percentagem_lucro_artigo_atual(1);
+
+
+
+SELECT *
+	FROM TAB_horario;
+    
+SELECT *
+	FROM TAB_horas_semana;
+    
+SELECT obter_data_horario_mais_recente(1, NULL);

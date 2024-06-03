@@ -634,6 +634,8 @@ BEGIN
     DECLARE n_artigos_vendidos INT DEFAULT 0;
     DECLARE n_artigos_transferidos_s INT DEFAULT 0;
     DECLARE n_artigos_transferidos_e INT DEFAULT 0;
+    DECLARE n_artigos_devolvidos INT DEFAULT 0;
+    DECLARE n_artigos_dados INT DEFAULT 0;
     
     IF ID_instalacoes_proc IS NULL THEN
 		SELECT SUM(quantidade) INTO n_artigos_comprados
@@ -645,6 +647,15 @@ BEGIN
 			FROM TAB_artigos a
 					INNER JOIN TAB_venda v ON a.ID = v.ID_artigo
 			WHERE v.data_hora_pedido <= NOW() AND a.ID = ID_artigo_proc;
+            
+		SELECT COUNT(*) INTO n_artigos_devolvidos
+			FROM TAB_venda v
+                    INNER JOIN TAB_troca tr ON v.ID = tr.ID_venda
+			WHERE v.ID_artigo = ID_artigo_proc AND tr.data_hora <= NOW();
+            
+		SELECT COUNT(*) INTO n_artigos_dados
+			FROM TAB_troca tr
+			WHERE tr.ID_artigo_dado = ID_artigo_proc AND tr.data_hora <= NOW(); 
         
 	ELSE
 		SELECT SUM(quantidade) INTO n_artigos_comprados
@@ -667,14 +678,25 @@ BEGIN
 					INNER JOIN TAB_artigo_para_transferencia apt ON a.ID = apt.ID_artigo
                     INNER JOIN TAB_transferencias t ON apt.ID_transferencia = t.ID
 			WHERE a.ID = ID_artigo_proc AND t.ID_instalacoes_destino = ID_instalacoes_proc AND t.data_hora_termino_transferencia <= NOW();
+            
+		SELECT COUNT(*) INTO n_artigos_devolvidos
+			FROM TAB_venda v
+                    INNER JOIN TAB_troca tr ON v.ID = tr.ID_venda
+			WHERE v.ID_artigo = ID_artigo_proc AND tr.data_hora <= NOW() AND tr.ID_instalacoes = ID_instalacoes_proc;
+            
+		SELECT COUNT(*) INTO n_artigos_dados
+			FROM TAB_troca tr
+			WHERE tr.ID_artigo_dado = ID_artigo_proc AND tr.data_hora <= NOW() AND tr.ID_instalacoes = ID_instalacoes_proc; 
         
 	END IF;
     
     IF n_artigos_comprados IS NULL THEN SET n_artigos_comprados = 0; END IF;
     IF n_artigos_transferidos_e IS NULL THEN SET n_artigos_transferidos_e = 0; END IF;
     IF n_artigos_transferidos_s IS NULL THEN SET n_artigos_transferidos_s = 0; END IF;
+    IF n_artigos_dados IS NULL THEN SET n_artigos_dados = 0; END IF;
+    IF n_artigos_devolvidos IS NULL THEN SET n_artigos_devolvidos = 0; END IF;
     
-	SET n_artigos_compra = n_artigos_comprados + n_artigos_transferidos_e - n_artigos_vendidos - n_artigos_transferidos_s;
+	SET n_artigos_compra = n_artigos_comprados + n_artigos_transferidos_e + n_artigos_devolvidos - n_artigos_vendidos - n_artigos_transferidos_s - n_artigos_dados;
     
     RETURN n_artigos_compra;
 END;
@@ -685,31 +707,88 @@ DELIMITER ;
 
 DELIMITER //
 
-CREATE FUNCTION obter_valor_artigos_venda_media(ID_artigo_proc INT)
+-- DROP FUNCTION IF EXISTS obter_valor_artigos_compra_media;
+
+CREATE FUNCTION obter_valor_artigos_compra_media(ID_artigo_proc INT)
 RETURNS DECIMAL(10,2) READS SQL DATA
 BEGIN
-    DECLARE total_em_stock INT;
-    DECLARE media_valor DECIMAL(10,2);
+	DECLARE valor_artigo_compra DECIMAL(10,2);
+    DECLARE quantidade_em_stock INT;
+    DECLARE total_quantidade INT;
+    DECLARE total_valor DECIMAL(10,2);
+    
+    SET quantidade_em_stock = obter_artigos_em_stock(ID_artigo_proc, NULL);
+	
+	SELECT 
+		SUM(sa.quantidade) AS total_quantidade, 
+		SUM(sa.valor_total) AS total_valor
+	INTO 
+		total_quantidade,
+        total_valor
+	FROM 
+		TAB_stock_artigo sa
+	INNER JOIN 
+		TAB_metodo_pagamento mp ON sa.ID_metodo_pagamento = mp.ID
+	WHERE 
+		sa.ID_artigo = ID_artigo_proc AND 
+		sa.data_hora_chegada <= NOW() AND
+		(SELECT SUM(quantidade) 
+		 FROM TAB_stock_artigo AS sa2 
+		 WHERE sa2.data_hora_chegada <= sa.data_hora_chegada AND sa2.ID_artigo = ID_artigo_proc) <= quantidade_em_stock
+	ORDER BY 
+		sa.data_hora_chegada DESC;
+        
+	IF total_valor IS NULL THEN SET total_valor = 0; END IF;
+	
+    SET valor_artigo_compra = total_valor / total_quantidade;
 
-    -- Obtendo a quantidade em stock utilizando a função fornecida
-    SET total_em_stock = obter_artigos_em_stock(ID_artigo_proc, NULL);
+    RETURN valor_artigo_compra;
+END;
+//
 
-    -- Calcular a média dos últimos x artigos recebidos, onde x é total_em_stock
-    IF total_em_stock > 0 THEN
-        SELECT AVG(valor_total)
-        INTO media_valor
-        FROM (
-            SELECT valor_total
-            FROM TAB_stock_artigo sa
-            WHERE sa.ID_artigo = ID_artigo_proc AND sa.data_hora_chegada <= NOW()
-            ORDER BY sa.data_hora_chegada DESC
-            LIMIT total_em_stock
-        ) AS subquery;
-    ELSE
-        SET media_valor = 0;
+DELIMITER ;
+
+DELIMITER //
+
+-- DROP FUNCTION IF EXISTS obter_percentagem_lucro_artigo_atual;
+
+CREATE FUNCTION obter_percentagem_lucro_artigo_atual(ID_artigo_proc INT)
+RETURNS DECIMAL(5,2) READS SQL DATA
+BEGIN
+    RETURN (SELECT percentagem_lucro
+		FROM TAB_percentagem_lucro_artigo
+        WHERE ID_artigo = ID_artigo_proc AND data_hora_aplicado <= NOW()
+        ORDER BY data_hora_aplicado
+        LIMIT 1);
+END;
+//
+
+DELIMITER ;
+
+DELIMITER //
+
+-- DROP FUNCTION IF EXISTS obter_data_horario_mais_recente;
+
+CREATE FUNCTION obter_data_horario_mais_recente(ID_instalacoes_proc INT, ID_feriado_proc INT)
+RETURNS DATE READS SQL DATA
+BEGIN
+	DECLARE data_mais_recente DATE;
+
+	IF ID_feriado_proc IS NULL THEN
+		SELECT data_entrada_vigor INTO data_mais_recente
+			FROM TAB_horario
+			WHERE ID_instalacoes = ID_instalacoes_proc
+			ORDER BY data_entrada_vigor
+			LIMIT 1;
+	ELSE
+		SELECT data_entrada_vigor INTO data_mais_recente
+			FROM TAB_horario
+			WHERE ID_instalacoes = ID_instalacoes_proc AND ID_feriado = ID_feriado_proc
+			ORDER BY data_entrada_vigor
+			LIMIT 1;
     END IF;
-
-    RETURN media_valor;
+	
+    RETURN data_mais_recente;
 END;
 //
 
