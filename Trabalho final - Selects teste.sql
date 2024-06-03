@@ -232,4 +232,44 @@ SELECT v.*
 SELECT *
 	FROM TAB_venda;
     
-SELECT obter_artigos_em_stock(1, NULL);
+    
+SELECT obter_artigos_em_stock(1, 1), obter_artigos_em_stock(1, 2), obter_artigos_em_stock(1, 4);
+
+SELECT *
+	FROM TAB_artigo_para_transferencia apt
+			INNER JOIN TAB_transferencias t ON apt.ID_transferencia = t.ID;
+
+SELECT SUM(apt.quantidade)
+	FROM TAB_artigos a
+			INNER JOIN TAB_artigo_para_transferencia apt ON a.ID = apt.ID_artigo
+	WHERE a.ID = 1 AND apt.ID_instalacoes_origem = 4 AND apt.data_hora_adicionado <= NOW()
+;
+
+SELECT SUM(apt.quantidade) 
+			FROM TAB_artigos a
+					INNER JOIN TAB_artigo_para_transferencia apt ON a.ID = apt.ID_artigo
+                    INNER JOIN TAB_transferencias t ON apt.ID_transferencia = t.ID
+			WHERE a.ID = 1 AND t.ID_instalacoes_destino = 4 AND t.data_hora_termino_transferencia <= NOW()
+;
+
+
+SELECT SUM(quantidade)
+	FROM TAB_stock_artigo sa
+			INNER JOIN TAB_metodo_pagamento mp ON sa.ID_metodo_pagamento = mp.ID
+	WHERE ID_artigo = 1 AND data_hora_chegada <= NOW()
+	;
+
+SELECT *
+	FROM TAB_stock_artigo sa
+			INNER JOIN TAB_metodo_pagamento mp ON sa.ID_metodo_pagamento = mp.ID
+	WHERE ID_artigo = 1 AND data_hora_chegada <= NOW()
+	ORDER BY data_hora_chegada DESC
+	LIMIT 1
+	;
+        
+SELECT *
+	FROM TAB_percentagem_lucro_artigo;
+    
+-- UPDATE TAB_percentagem_lucro_artigo SET data_hora_aplicado = NOW() WHERE ID = 1;
+
+SELECT obter_valor_artigos_venda_media(1);

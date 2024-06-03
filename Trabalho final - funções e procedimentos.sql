@@ -623,12 +623,13 @@ DELIMITER ;
 
 DELIMITER //
 
-DROP FUNCTION IF EXISTS obter_artigos_em_stock;
+-- DROP FUNCTION IF EXISTS obter_artigos_em_stock;
 
 CREATE FUNCTION obter_artigos_em_stock(ID_artigo_proc INT, ID_instalacoes_proc INT)
 RETURNS INT READS SQL DATA
 BEGIN
     DECLARE n_artigos_compra INT;
+    DECLARE n_artigos_ano_passado INT DEFAULT 0; -- Depos adicionar
     DECLARE n_artigos_comprados INT DEFAULT 0;
     DECLARE n_artigos_vendidos INT DEFAULT 0;
     DECLARE n_artigos_transferidos_s INT DEFAULT 0;
@@ -644,9 +645,6 @@ BEGIN
 			FROM TAB_artigos a
 					INNER JOIN TAB_venda v ON a.ID = v.ID_artigo
 			WHERE v.data_hora_pedido <= NOW() AND a.ID = ID_artigo_proc;
-            
-		SELECT SUM(quantidade)
-			FROM TAB_artigo_para_transferencia
         
 	ELSE
 		SELECT SUM(quantidade) INTO n_artigos_comprados
@@ -659,11 +657,24 @@ BEGIN
 					INNER JOIN TAB_venda v ON a.ID = v.ID_artigo
 			WHERE v.data_hora_pedido <= NOW() AND a.ID = ID_artigo_proc AND v.ID_instalacoes_compra_recolha = ID_instalacoes_proc;
 		
+        SELECT SUM(apt.quantidade) INTO n_artigos_transferidos_s
+			FROM TAB_artigos a
+					INNER JOIN TAB_artigo_para_transferencia apt ON a.ID = apt.ID_artigo
+			WHERE a.ID = ID_artigo_proc AND apt.ID_instalacoes_origem = ID_instalacoes_proc AND apt.data_hora_adicionado <= NOW();
+		
+       SELECT SUM(apt.quantidade) INTO n_artigos_transferidos_e
+			FROM TAB_artigos a
+					INNER JOIN TAB_artigo_para_transferencia apt ON a.ID = apt.ID_artigo
+                    INNER JOIN TAB_transferencias t ON apt.ID_transferencia = t.ID
+			WHERE a.ID = ID_artigo_proc AND t.ID_instalacoes_destino = ID_instalacoes_proc AND t.data_hora_termino_transferencia <= NOW();
+        
 	END IF;
     
     IF n_artigos_comprados IS NULL THEN SET n_artigos_comprados = 0; END IF;
+    IF n_artigos_transferidos_e IS NULL THEN SET n_artigos_transferidos_e = 0; END IF;
+    IF n_artigos_transferidos_s IS NULL THEN SET n_artigos_transferidos_s = 0; END IF;
     
-	SET n_artigos_compra = n_artigos_comprados - n_artigos_vendidos - n_artigos_transferidos;
+	SET n_artigos_compra = n_artigos_comprados + n_artigos_transferidos_e - n_artigos_vendidos - n_artigos_transferidos_s;
     
     RETURN n_artigos_compra;
 END;
@@ -674,27 +685,31 @@ DELIMITER ;
 
 DELIMITER //
 
--- DROP FUNCTION IF EXISTS obter_valor_artigos_venda_media;
-
 CREATE FUNCTION obter_valor_artigos_venda_media(ID_artigo_proc INT)
 RETURNS DECIMAL(10,2) READS SQL DATA
 BEGIN
-	DECLARE valor_artigo_compra DECIMAL(10,2);
-    
-	SELECT COUNT(*)
-		FROM TAB_stock_artigo sa
-				INNER JOIN TAB_metodo_pagamento mp ON sa.ID_metodo_pagamento = mp.ID
-		WHERE ID_artigo = ID_artigo_proc AND data_hora_chegada <= NOW()
-        ;
-    
-    SELECT ID
-		FROM TAB_stock_artigo sa
-				INNER JOIN TAB_metodo_pagamento mp ON sa.ID_metodo_pagamento = mp.ID
-		WHERE ID_artigo = ID_artigo_proc AND data_hora_chegada <= NOW()
-		ORDER BY data_hora DESC
-		LIMIT 1;
+    DECLARE total_em_stock INT;
+    DECLARE media_valor DECIMAL(10,2);
 
-    RETURN ;
+    -- Obtendo a quantidade em stock utilizando a função fornecida
+    SET total_em_stock = obter_artigos_em_stock(ID_artigo_proc, NULL);
+
+    -- Calcular a média dos últimos x artigos recebidos, onde x é total_em_stock
+    IF total_em_stock > 0 THEN
+        SELECT AVG(valor_total)
+        INTO media_valor
+        FROM (
+            SELECT valor_total
+            FROM TAB_stock_artigo sa
+            WHERE sa.ID_artigo = ID_artigo_proc AND sa.data_hora_chegada <= NOW()
+            ORDER BY sa.data_hora_chegada DESC
+            LIMIT total_em_stock
+        ) AS subquery;
+    ELSE
+        SET media_valor = 0;
+    END IF;
+
+    RETURN media_valor;
 END;
 //
 

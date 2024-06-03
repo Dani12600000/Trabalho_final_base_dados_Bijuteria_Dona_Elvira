@@ -332,7 +332,8 @@ VALUES
     
 INSERT INTO TAB_stock_artigo (ID_artigo, quantidade, ID_instalacoes_destino, data_hora_envio, ID_metodo_pagamento, valor_total, data_hora_chegada)
 VALUE
-	(1, 10, 4, '2024-06-02 20:40', 3, 100.00, '2024-06-03 10:00:00');
+	(1, 10, 4, '2024-06-02 20:40', 3, 100.00, '2024-06-03 10:00:00'),
+    (1, 5, 4, '2024-06-02 21:40', 3, 100.00, '2024-06-03 12:00:00');
     
 INSERT INTO TAB_venda (ID_artigo, ID_metodo_pagamento, ID_cliente, ID_funcionario, compra_online, ID_instalacoes_compra_recolha)
 VALUE
@@ -344,4 +345,18 @@ VALUE
         FALSE,
         (SELECT ID FROM TAB_instalacoes WHERE designacao LIKE "%loja%" ORDER BY RAND() LIMIT 1)
 	);
+    
+INSERT INTO TAB_transferencias (ID_funcionario_responsavel_transferencia, ID_instalacoes_destino, data_hora_termino_transferencia)
+VALUES
+	((SELECT ID FROM TAB_funcionario ORDER BY RAND() LIMIT 1), 1, '2024-06-03 19:35:00'),
+    ((SELECT ID FROM TAB_funcionario ORDER BY RAND() LIMIT 1), 2, '2024-06-03 19:40:00'),
+    ((SELECT ID FROM TAB_funcionario ORDER BY RAND() LIMIT 1), 1, '2024-06-10 20:00:00'),
+    ((SELECT ID FROM TAB_funcionario ORDER BY RAND() LIMIT 1), 2, '2024-06-10 20:00:00');
+    
+INSERT INTO TAB_artigo_para_transferencia (ID_transferencia, ID_artigo, ID_instalacoes_origem, quantidade, data_hora_adicionado, detalhes)
+VALUES
+	(1, 1, 4, 3, '2024-06-03 19:25:00', ''),
+    (2, 1, 4, 3, '2024-06-03 19:30:00', 'Houve um pequeno atraso'),
+    (3, 1, 4, 2, '2024-06-03 20:00:00', 'Ta a haver uma pequena greve'),
+    (4, 1, 4, 2, '2024-06-05 19:30:00', 'Ta a haver uma pequena greve');
     
