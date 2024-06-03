@@ -631,7 +631,8 @@ BEGIN
     DECLARE n_artigos_compra INT;
     DECLARE n_artigos_comprados INT DEFAULT 0;
     DECLARE n_artigos_vendidos INT DEFAULT 0;
-    DECLARE n_artigos_transferidos INT DEFAULT 0;
+    DECLARE n_artigos_transferidos_s INT DEFAULT 0;
+    DECLARE n_artigos_transferidos_e INT DEFAULT 0;
     
     IF ID_instalacoes_proc IS NULL THEN
 		SELECT SUM(quantidade) INTO n_artigos_comprados
@@ -643,6 +644,9 @@ BEGIN
 			FROM TAB_artigos a
 					INNER JOIN TAB_venda v ON a.ID = v.ID_artigo
 			WHERE v.data_hora_pedido <= NOW() AND a.ID = ID_artigo_proc;
+            
+		SELECT SUM(quantidade)
+			FROM TAB_artigo_para_transferencia
         
 	ELSE
 		SELECT SUM(quantidade) INTO n_artigos_comprados
