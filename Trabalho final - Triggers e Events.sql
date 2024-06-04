@@ -2,8 +2,6 @@ USE DB_Bijuteria_Dona_Elvira;
 
 DELIMITER //
 
--- DROP EVENT IF EXISTS verifica_aniversariantes;
-
 CREATE EVENT verifica_aniversariantes
 ON SCHEDULE EVERY 1 DAY
 STARTS CURRENT_DATE() + INTERVAL 1 DAY
@@ -38,8 +36,6 @@ CREATE TABLE IF NOT EXISTS logs_clientes (
 
 DELIMITER //
 
--- DROP TRIGGER IF EXISTS adicao_cliente;
-
 CREATE TRIGGER adicao_cliente AFTER INSERT ON TAB_cliente
 FOR EACH ROW 
 BEGIN
@@ -54,8 +50,6 @@ BEGIN
 END;
 //
 
--- DROP TRIGGER IF EXISTS remocao_cliente;
-
 CREATE TRIGGER remocao_cliente AFTER DELETE ON TAB_cliente
 FOR EACH ROW 
 BEGIN
@@ -69,8 +63,6 @@ BEGIN
     VALUES (OLD.ID, 'DELETE', CONCAT('Foi removido um cliente com o ID pessoa ', OLD.ID_pessoa, ' e chamada ', nome_pessoa));
 END;
 //
-
--- DROP TRIGGER IF EXISTS update_cliente;
 
 CREATE TRIGGER update_cliente AFTER UPDATE ON TAB_cliente
 FOR EACH ROW 
@@ -95,8 +87,6 @@ CREATE TABLE IF NOT EXISTS logs_pessoas (
 
 DELIMITER //
 
--- DROP TRIGGER IF EXISTS adicao_pessoa;
-
 CREATE TRIGGER adicao_pessoa AFTER INSERT ON TAB_pessoa
 FOR EACH ROW 
 BEGIN
@@ -104,8 +94,6 @@ BEGIN
     VALUES (NEW.ID, 'INSERT', CONCAT('Foi inserido uma nova pessoa com o nome ', NEW.nome, ' ', NEW.sobrenome, ' e data de nascimento na data ', NEW.data_nascimento));
 END;
 //
-
--- DROP TRIGGER IF EXISTS remocao_pessoa;
 
 CREATE TRIGGER remocao_pessoa AFTER DELETE ON TAB_pessoa
 FOR EACH ROW 
@@ -118,8 +106,6 @@ END;
 DELIMITER ;
 
 DELIMITER //
-
--- DROP TRIGGER IF EXISTS update_pessoa;
 
 CREATE TRIGGER update_pessoa AFTER UPDATE ON TAB_pessoa
 FOR EACH ROW 
@@ -169,8 +155,6 @@ DELIMITER ;
 
 DELIMITER //
 
--- DROP TRIGGER trg_stock_artigo_before_insert;
-
 CREATE TRIGGER trg_stock_artigo_before_insert
 BEFORE INSERT ON TAB_stock_artigo
 FOR EACH ROW
@@ -194,8 +178,6 @@ END //
 DELIMITER ;
 
 DELIMITER //
-
--- DROP TRIGGER trg_stock_artigo_before_update;
 
 CREATE TRIGGER trg_stock_artigo_before_update
 BEFORE UPDATE ON TAB_stock_artigo
