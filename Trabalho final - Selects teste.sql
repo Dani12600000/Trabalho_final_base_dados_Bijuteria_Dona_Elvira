@@ -54,6 +54,8 @@ SELECT *
 SELECT *
 	FROM VIEW_informacoes_cliente;
 
+SELECT *
+	FROM VIEW_hierarquia_ordenada_cargos_atual;
     
 SELECT NIF, COUNT(*)
 	FROM TAB_pessoa

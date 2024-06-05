@@ -1,7 +1,5 @@
 USE DB_Bijuteria_Dona_Elvira;
 
--- DROP VIEW IF EXISTS VIEW_informacoes_cliente;
-
 CREATE VIEW VIEW_informacoes_cliente AS
 SELECT c.ID AS ID_cliente,
 		pe.ID AS ID_pessoa,
@@ -25,8 +23,6 @@ SELECT c.ID AS ID_cliente,
             LEFT JOIN TAB_informacoes_cidadao ic ON pe.ID = ic.ID_pessoa
             LEFT JOIN TAB_passaporte pa ON pe.ID = pa.ID_pessoa;
        
--- DROP VIEW VIEW_hierarquia_ordenada_cargos_atual;
-       
 CREATE VIEW VIEW_hierarquia_ordenada_cargos_atual AS
 WITH RECURSIVE HierarquiaCompleta AS (
     SELECT h.ID, h.ID_cargo_atribuindo, h.ID_cargo_superior, 0 AS distancia
@@ -45,8 +41,6 @@ FROM HierarquiaCompleta hc
 INNER JOIN TAB_cargos ca ON hc.ID_cargo_atribuindo = ca.ID
 LEFT JOIN TAB_cargos cs ON hc.ID_cargo_superior = cs.ID
 ORDER BY hc.distancia ASC, hc.ID_cargo_superior ASC;     
-            
--- DROP VIEW IF EXISTS VIEW_informacoes_funcionario;
 
 CREATE VIEW VIEW_informacoes_funcionario AS
 SELECT f.ID AS ID_funcionario, 
@@ -81,7 +75,14 @@ SELECT f.ID AS ID_funcionario,
 
 
 CREATE VIEW VIEW_detalhes_artigos AS
-SELECT a.ID, a.descricao AS descricao_artigo, tia.designacao AS des_tipo_artigo, t.designacao AS tamanho, t.tamanho_min_cm, t.tamanho_max_cm, f.nome_empresa AS nome_fornecedor, f.NIF_empresa AS NIF_fornecedor, obter_artigos_em_stock(a.ID, NULL) AS artigos_em_stock, ROUND(obter_valor_artigos_compra_media(a.ID) + obter_valor_artigos_compra_media(a.ID) * obter_percentagem_lucro_artigo_atual(a.ID) / 100, 2) AS preco
+SELECT a.ID, a.descricao AS descricao_artigo, 
+		tia.designacao AS des_tipo_artigo, 
+        t.designacao AS tamanho, 
+        t.tamanho_min_cm, t.tamanho_max_cm, 
+        f.nome_empresa AS nome_fornecedor, 
+        f.NIF_empresa AS NIF_fornecedor, 
+        obter_artigos_em_stock(a.ID, NULL) AS artigos_em_stock, 
+        ROUND(obter_valor_artigos_compra_media(a.ID) + obter_valor_artigos_compra_media(a.ID) * obter_percentagem_lucro_artigo_atual(a.ID) / 100, 2) AS preco
 	FROM TAB_artigos a 
             INNER JOIN TAB_fornecedores f ON a.ID_fornecedor = f.ID
             INNER JOIN TAB_tipos_artigos tia ON a.ID_tipo_artigo = tia.ID
