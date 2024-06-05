@@ -1,3 +1,0 @@
-SELECT COUNT(*) AS total_tabelas
-FROM INFORMATION_SCHEMA.TABLES
-WHERE TABLE_SCHEMA = 'DB_Bijuteria_Dona_Elvira';
