@@ -112,7 +112,7 @@ SELECT ho.ID_instalacoes,
 
 ;
 
-CREATE VIEW VIEW_instalacoes AS
+CREATE VIEW VIEW_informacao_instalacoes AS
 SELECT i.ID, 
 		i.designacao, 
         ti.designacao AS des_tipo_instalacoes, 

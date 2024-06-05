@@ -7,4 +7,4 @@ call ExecutarInsercaoRegistosMultiplosCidadoes(10);
 call ExecutarInsercaoRegistosMultiplosEstrangeiros(10);
 call ExecutarInsercaoRegistosMultiplosContratosAtuaisFuncionarios();
 call ExecutarInsercaoRegistosMultiplasPromocoes();
-call ExecutarInsercaoRegistosMultiplasAbastecimentosStock();
+call ExecutarInsercaoRegistosMultiplasAbastecimentosStock(NULL);

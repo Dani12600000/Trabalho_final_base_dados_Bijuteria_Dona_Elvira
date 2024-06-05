@@ -54,8 +54,14 @@ SELECT *
 SELECT *
 	FROM VIEW_informacoes_cliente;
 
+
 SELECT *
 	FROM VIEW_hierarquia_ordenada_cargos_atual;
+    
+    
+SELECT *
+	FROM VIEW_detalhes_artigos;
+    
     
 SELECT NIF, COUNT(*)
 	FROM TAB_pessoa
@@ -358,3 +364,9 @@ SELECT *
 
     
 SELECT obter_data_horario_mais_recente(1, NULL);
+
+SELECT *
+	FROM VIEW_horario_atual;
+
+SELECT *
+	FROM VIEW_informacao_instalacoes;
