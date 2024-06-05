@@ -94,7 +94,8 @@ BEGIN
     SET nif = CONCAT(nif_base, check_digit);
 
     RETURN nif;
-END //
+END; 
+//
 
 DELIMITER ;
 
@@ -119,7 +120,8 @@ BEGIN
     SET cc = CONCAT(letras, numeros);
 
     RETURN cc;
-END //
+END; 
+//
 
 DELIMITER ;
 
@@ -145,7 +147,8 @@ BEGIN
     SET passaporte = CONCAT(letras, numeros);
 
     RETURN passaporte;
-END //
+END; 
+//
 
 DELIMITER ;
 
