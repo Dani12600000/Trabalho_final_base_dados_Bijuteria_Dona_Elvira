@@ -259,8 +259,6 @@ SELECT ID
         LIMIT 1;
 
 
-
-
 SELECT COUNT(*)
 		FROM TAB_artigos a 
 		INNER JOIN TAB_stock_artigo sa ON a.ID = sa.ID_artigo
@@ -365,8 +363,10 @@ SELECT *
     
 SELECT obter_data_horario_mais_recente(1, NULL);
 
+
 SELECT *
 	FROM VIEW_horario_atual;
+
 
 SELECT *
 	FROM VIEW_informacao_instalacoes;
