@@ -1,7 +1,5 @@
 USE DB_Bijuteria_Dona_Elvira;
 
-DROP TABLE IF EXISTS TAB_AUX_pessoa;
-
 CREATE TABLE TAB_AUX_pessoa (
 	ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     primeiro_nome NVARCHAR(50) NOT NULL,

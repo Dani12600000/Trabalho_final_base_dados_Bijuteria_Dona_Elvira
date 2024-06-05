@@ -2,8 +2,6 @@ USE DB_Bijuteria_Dona_Elvira;
 
 DELIMITER //
 
--- DROP FUNCTION IF EXISTS obter_nome_aleatorio;
-
 CREATE FUNCTION obter_nome_aleatorio()
 RETURNS VARCHAR(255) READS SQL DATA
 BEGIN
@@ -35,8 +33,6 @@ DELIMITER ;
 
 DELIMITER //
 
--- DROP FUNCTION IF EXISTS obter_sobrenome_aleatorio;
-
 CREATE FUNCTION obter_sobrenome_aleatorio()
 RETURNS VARCHAR(255) READS SQL DATA
 BEGIN
@@ -67,8 +63,6 @@ END;
 DELIMITER ;
 
 DELIMITER //
-
--- DROP FUNCTION IF EXISTS gerar_nif;
 
 CREATE FUNCTION gerar_nif()
 RETURNS CHAR(9)
@@ -106,8 +100,6 @@ DELIMITER ;
 
 DELIMITER //
 
--- DROP FUNCTION IF EXISTS gerar_cc;
-
 CREATE FUNCTION gerar_cc()
 RETURNS CHAR(12)
 DETERMINISTIC
@@ -132,8 +124,6 @@ END //
 DELIMITER ;
 
 DELIMITER //
-
--- DROP FUNCTION IF EXISTS gerar_passaporte;
 
 CREATE FUNCTION gerar_passaporte()
 RETURNS CHAR(9)
@@ -162,8 +152,6 @@ DELIMITER ;
 
 DELIMITER //
 
--- DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosPessoas;
-
 CREATE PROCEDURE ExecutarInsercaoRegistosMultiplosPessoas(IN vezes INT)
 BEGIN
     DECLARE contador INT;
@@ -186,8 +174,6 @@ END;
 DELIMITER ;
 
 DELIMITER //
-
--- DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosClientes;
 
 CREATE PROCEDURE ExecutarInsercaoRegistosMultiplosClientes(IN vezes INT)
 BEGIN
@@ -216,8 +202,6 @@ END;
 DELIMITER ;
 
 DELIMITER //
-
--- DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosFuncionarios;
 
 CREATE PROCEDURE ExecutarInsercaoRegistosMultiplosFuncionarios(IN vezes INT)
 BEGIN
@@ -253,8 +237,6 @@ DELIMITER ;
 
 DELIMITER //
 
--- DROP FUNCTION IF EXISTS existem_pessoas_com_mais_1_conta_cliente;
-
 CREATE FUNCTION existem_pessoas_com_mais_1_conta_cliente(ID_pessoa_avaliar INT)
 RETURNS BOOLEAN READS SQL DATA
 BEGIN
@@ -277,8 +259,6 @@ END;
 DELIMITER ;
 
 DELIMITER //
-
--- DROP PROCEDURE IF EXISTS ApagarRegistosRepetidosClientes;
 
 CREATE PROCEDURE ApagarRegistosRepetidosClientes()
 BEGIN
@@ -311,8 +291,6 @@ DELIMITER ;
 
 DELIMITER //
 
--- DROP FUNCTION IF EXISTS proxima_data;
-
 CREATE FUNCTION proxima_data(data_verificar date)
 RETURNS DATE READS SQL DATA
 BEGIN
@@ -334,8 +312,6 @@ END;
 DELIMITER ;
 
 DELIMITER //
-
--- DROP FUNCTION IF EXISTS dia_feriado_muda_cada_ano;
 
 CREATE FUNCTION dia_feriado_muda_cada_ano(ID_feriado_into INT)
 RETURNS BOOL READS SQL DATA
@@ -361,8 +337,6 @@ END;
 DELIMITER ;
 
 DELIMITER //
-
--- DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosCidadoes;
 
 CREATE PROCEDURE ExecutarInsercaoRegistosMultiplosCidadoes(IN vezes INT)
 BEGIN
@@ -393,8 +367,6 @@ DELIMITER ;
 
 DELIMITER //
 
--- DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosEstrangeiros;
-
 CREATE PROCEDURE ExecutarInsercaoRegistosMultiplosEstrangeiros(IN vezes INT)
 BEGIN
     DECLARE contador INT;
@@ -423,8 +395,6 @@ END;
 DELIMITER ;
 
 DELIMITER //
-
--- DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplosContratosAtuaisFuncionarios;
 
 CREATE PROCEDURE ExecutarInsercaoRegistosMultiplosContratosAtuaisFuncionarios()
 BEGIN
@@ -459,8 +429,6 @@ DELIMITER ;
 
 DELIMITER //
 
--- DROP FUNCTION IF EXISTS obter_contrato_mais_recente;
-
 CREATE FUNCTION obter_contrato_mais_recente(ID_funcionario_proc INT)
 RETURNS INT READS SQL DATA
 BEGIN
@@ -477,8 +445,6 @@ DELIMITER ;
 
 DELIMITER //
 
--- DROP FUNCTION IF EXISTS obter_definicao_hierarquica_mais_recente;
-
 CREATE FUNCTION obter_definicao_hierarquica_mais_recente(ID_cargo_proc INT)
 RETURNS INT READS SQL DATA
 BEGIN
@@ -494,8 +460,6 @@ DELIMITER ;
 
 DELIMITER //
 
--- DROP FUNCTION IF EXISTS obter_promocao_mais_recente;
-
 CREATE FUNCTION obter_promocao_mais_recente(ID_funcionario_proc INT)
 RETURNS INT READS SQL DATA
 BEGIN
@@ -510,8 +474,6 @@ END;
 DELIMITER ;
 
 DELIMITER //
-
--- DROP FUNCTION IF EXISTS obter_data_termino_contrato;
 
 CREATE FUNCTION obter_data_termino_contrato(des_no_singular VARCHAR(30), data_hora_contratado_avaliando DATETIME, prazo_contrato_obt INT)
 RETURNS DATE READS SQL DATA
@@ -529,8 +491,6 @@ DELIMITER ;
 
 
 DELIMITER //
-
--- DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplasPromocoes;
 
 CREATE PROCEDURE ExecutarInsercaoRegistosMultiplasPromocoes()
 BEGIN
@@ -568,8 +528,6 @@ DELIMITER ;
 
 DELIMITER //
 
--- DROP FUNCTION IF EXISTS obter_experiencia_mais_recente;
-
 CREATE FUNCTION obter_experiencia_mais_recente(ID_funcionario_proc INT)
 RETURNS INT READS SQL DATA
 BEGIN
@@ -585,8 +543,6 @@ DELIMITER ;
 
 
 DELIMITER //
-
--- DROP PROCEDURE IF EXISTS ExecutarInsercaoRegistosMultiplasAbastecimentosStock;
 
 CREATE PROCEDURE ExecutarInsercaoRegistosMultiplasAbastecimentosStock(max_iterations INT)
 BEGIN
@@ -622,8 +578,6 @@ END
 DELIMITER ;
 
 DELIMITER //
-
--- DROP FUNCTION IF EXISTS obter_artigos_em_stock;
 
 CREATE FUNCTION obter_artigos_em_stock(ID_artigo_proc INT, ID_instalacoes_proc INT)
 RETURNS INT READS SQL DATA
@@ -707,8 +661,6 @@ DELIMITER ;
 
 DELIMITER //
 
--- DROP FUNCTION IF EXISTS obter_valor_artigos_compra_media;
-
 CREATE FUNCTION obter_valor_artigos_compra_media(ID_artigo_proc INT)
 RETURNS DECIMAL(10,2) READS SQL DATA
 BEGIN
@@ -750,8 +702,6 @@ DELIMITER ;
 
 DELIMITER //
 
--- DROP FUNCTION IF EXISTS obter_percentagem_lucro_artigo_atual;
-
 CREATE FUNCTION obter_percentagem_lucro_artigo_atual(ID_artigo_proc INT)
 RETURNS DECIMAL(5,2) READS SQL DATA
 BEGIN
@@ -766,8 +716,6 @@ END;
 DELIMITER ;
 
 DELIMITER //
-
--- DROP FUNCTION IF EXISTS obter_data_horario_mais_recente;
 
 CREATE FUNCTION obter_data_horario_mais_recente(ID_instalacoes_proc INT, ID_feriado_proc INT)
 RETURNS DATE READS SQL DATA
