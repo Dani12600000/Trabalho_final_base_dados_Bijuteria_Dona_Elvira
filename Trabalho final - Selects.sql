@@ -34,4 +34,21 @@ SELECT acao, COUNT(ID)
 	FROM logs_clientes
     GROUP BY acao;
     
--- ACABAR !!!!
+-- Feriados e datas
+SELECT df.ID, f.designacao, df.data, df.n_dias
+	FROM TAB_dia_feriado df INNER JOIN TAB_feriado f ON df.ID_feriado = f.ID
+    ORDER BY df.data ASC;
+    
+-- Profissões que tem salário base perto da média
+SELECT *
+	FROM TAB_profissao
+    WHERE ABS(salario_base - (SELECT AVG(salario_base) FROM TAB_profissao)) = (
+		SELECT ABS(salario_base - (SELECT AVG(salario_base) FROM TAB_profissao))
+			FROM TAB_profissao
+			ORDER BY ABS(salario_base - (SELECT AVG(salario_base) FROM TAB_profissao)) ASC
+			LIMIT 1)
+	;
+    
+-- Detalhes funcionarios
+SELECT *
+	FROM VIEW_informacoes_funcionario;
